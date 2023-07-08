@@ -8,7 +8,7 @@ The objective of this project is to watch a source directory and move files base
 
 ### 1. When the bot is setup as a CLIENT, it will sftp the files to a staging server based on the provided criteria of file types in the bot.ini file
 
-[GENERAL]
+[GENERAL]<br/>
 ini_file_path = /abc/def/IA_BOT/bot.ini
 source_dir = /dd
 log_file = /abc/def/IA_BOT/log/bot_log.log
