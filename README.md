@@ -6,7 +6,7 @@ The objective of this project is to watch a source directory and move files base
 
 ## Dependencies
 Package                    Version<br/>
--------------------------  -------<br/>
+-------<br/>
 altgraph                  0.17.3<br/>
 bcrypt                    4.0.1<br/>
 cffi                      1.15.1<br/>
