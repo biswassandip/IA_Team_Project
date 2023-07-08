@@ -18,7 +18,7 @@ rotate_logs = True
 rotation_size = 1000000
 
 [CLIENT]
-criteria1 = _*.*_
+criteria1 = *.*
 
 [SFTP]
 sftp_ip = 22.22.22.22
