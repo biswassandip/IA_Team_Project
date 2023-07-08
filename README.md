@@ -84,4 +84,26 @@ stop_flag = False<br/>
 ### 3. To avoid dependencies, the executable in the /dist folder can also be executed and follow the process
 <br/>
 
+## How to execute?
 
+Execute the main program <b>bot_setup.py</b>. This will give you the below menu:
+
+=================================================<br/>
+BOT SETUP MENU<br/>
+=================================================<br/>
+1. Client BOT setup<br/>
+2. Server BOT setup<br/>
+<br/>
+3. Start process<br/>
+<br/>
+4. Stop process<br/>
+<br/>
+5. Quit<br/>
+<br/>
+Enter your options between 1-5: <br/>
+
+Option 1 - would create the ini file and required setup for Client setup. After this review the bot.ini file and update it as required.
+Option 2 - would create the ini file and required setup for Server setup. After this review the bot.ini file and update it as required.
+Option 3 - now you can start the process and it will start based on the bot.ini configuration. Please note that any update in the ini file after starting processing would require to stop the process by updating <b>stop_flag=True</b> in the bot.ini file.
+Option 4 - execute the bot_setup.py and when this option is selected then the process will be stopped. Alternatively, to stop the process by updating <b>stop_flag=True</b> in the bot.ini file.
+Option 5 - will quit the options.
