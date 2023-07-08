@@ -6,7 +6,6 @@ msc_ia_bot/lib
 *.ini
 msc_ia_bot/dist
 msc_ia_bot/build
-dist
 .vscode
 IA_BOT
 msc_ia_bot/common/__pycache__
