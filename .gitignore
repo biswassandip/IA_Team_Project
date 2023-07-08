@@ -4,7 +4,6 @@ msc_ia_bot/lib
 *.pem
 *.pub
 *.ini
-msc_ia_bot/dist
 msc_ia_bot/build
 .vscode
 IA_BOT
