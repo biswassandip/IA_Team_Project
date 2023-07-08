@@ -1,7 +1,7 @@
 # --------------------------------------------------------------------
 # file name: fw_bot.py
 # description: this class actually monitors and moves files based on
-# the config file.
+# the config file..
 # --------------------------------------------------------------------
 import time
 from watchdog.observers import Observer
