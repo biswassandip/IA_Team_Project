@@ -44,8 +44,8 @@ rotation_size = 1000000<br/>
 <br/>
 [SERVER]<br/>
 criteria1 = search_word1, , /path/to/destination_directory1<br/>
-criteria2 = , file_type2, /path/to/destination_directory2<br/>
-criteria3 = search_word3, file_type3, /path/to/destination_directory3<br/>
+criteria2 = , *.pdf, /path/to/destination_directory2<br/>
+criteria3 = search_word3, *.txt, /path/to/destination_directory3<br/>
 <br/>
 [PROCESSES]<br/>
 num_processes = 2<br/>
@@ -54,3 +54,29 @@ min_processes = 2<br/>
 <br/>
 [FLAGS]<br/>
 stop_flag = False<br/>
+<br/>
+### 3. To avoid dependencies, the executable in the /dist folder can also be executed and follow the process
+<br/>
+## Dependencies
+Package                   Version<br/>
+------------------------- -------<br/>
+altgraph                  0.17.3<br/>
+bcrypt                    4.0.1<br/>
+cffi                      1.15.1<br/>
+colorama                  0.4.6<br/>
+cryptography              41.0.1<br/>
+importlib-metadata        6.7.0<br/>
+jaraco.classes            3.2.3<br/>
+keyring                   24.2.0<br/>
+macholib                  1.16.2<br/>
+more-itertools            9.1.0<br/>
+paramiko                  3.2.0<br/>
+pip                       23.1.2<br/>
+pycparser                 2.21<br/>
+pyinstaller               5.13.0<br/>
+pyinstaller-hooks-contrib 2023.5<br/>
+PyNaCl                    1.5.0<br/>
+setuptools                58.1.0<br/>
+watchdog                  3.0.0<br/>
+zipp                      3.15.0<br/>
+<br/>
