@@ -4,8 +4,10 @@
 
 The objective of this project is to watch a source directory and move files based on [SEARCH] criteria given in the ini file that is created as bot.ini when the main program bot_setup.py is executed.
 
+## Python 3.10.2
+
 ## Dependencies
-Package                    Version<br/>
+### Package                    Version<br/>
 -------<br/>
 altgraph                  0.17.3<br/>
 bcrypt                    4.0.1<br/>
@@ -55,7 +57,7 @@ private_key_path = /abc/def/IA_BOT/private_key.pem<br/>
 [FLAGS]<br/>
 stop_flag = False<br/>
 
-### 2. When the bot is setup as a SERVER, it will move files based on the criteria provided in the the bot.ini file. Here the criteria can be combinations of word search + file type, word search only or file type only. Each criteria must be unique accompanied with a destination directory where it needs to be moved
+### 2. When the bot is setup as a SERVER, it will move files based on the criteria provided in the bot.ini file. Here the criteria can be combinations of word search + file type, word search only or file type only. Each criteria must be unique and accompanied with a destination directory where it needs to be moved
 <br/>
 [GENERAL]<br/>
 ini_file_path = /abc/def/IA_BOT/bot.ini<br/>
