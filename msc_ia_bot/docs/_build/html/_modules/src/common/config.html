@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.common.config &mdash; ia_bot 0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            ia_bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ia_bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.common.config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.common.config</h1><div class="highlight"><pre>
+<span></span><span class="c1"># --------------------------------------------------------------------</span>
+<span class="c1"># file name: config.py</span>
+<span class="c1"># description: this class is used for config related methods</span>
+<span class="c1"># --------------------------------------------------------------------</span>
+<span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
+<span class="kn">from</span> <span class="nn">common.utils</span> <span class="kn">import</span> <span class="n">Utils</span>
+<span class="kn">import</span> <span class="nn">common.constants</span> <span class="k">as</span> <span class="nn">cons</span>
+<span class="kn">from</span> <span class="nn">common.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">paramiko</span>
+<span class="kn">import</span> <span class="nn">keyring</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># initialize all the required values</span>
+    <span class="c1"># ====================================================================</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">ini_file_path</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_FILE_PATH</span><span class="p">,</span>
+                 <span class="n">source_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">is_client_config</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">log_file</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">LOG_FILE</span><span class="p">,</span>
+                 <span class="n">error_dir</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">ERROR_DIR</span><span class="p">,</span>
+                 <span class="n">unmatched_dir</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">UNMATCHED_DIR</span><span class="p">,</span>
+                 <span class="n">rotate_logs</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">ROTATE_LOGS</span><span class="p">,</span>
+                 <span class="n">rotation_size</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">ROTATION_SIZE</span><span class="p">,</span>
+                 <span class="n">num_processes</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">MIN_PROCESSES</span><span class="p">,</span>
+                 <span class="n">scaling_factor</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">SCALING_FACTOR</span><span class="p">,</span>
+                 <span class="n">min_processes</span><span class="o">=</span><span class="n">cons</span><span class="o">.</span><span class="n">MIN_PROCESSES</span><span class="p">,</span>
+                 <span class="n">sftp_ip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">sftp_port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">sftp_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">ini_file_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_dir</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">source_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_client_config</span><span class="o">=</span><span class="n">is_client_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_file</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error_dir</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">error_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unmatched_dir</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">unmatched_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotate_logs</span> <span class="o">=</span> <span class="n">rotate_logs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation_size</span> <span class="o">=</span> <span class="n">rotation_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">=</span> <span class="n">num_processes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scaling_factor</span> <span class="o">=</span> <span class="n">scaling_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_processes</span> <span class="o">=</span> <span class="n">min_processes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sftp_ip</span> <span class="o">=</span> <span class="n">sftp_ip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sftp_port</span> <span class="o">=</span> <span class="n">sftp_port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sftp_path</span> <span class="o">=</span> <span class="n">sftp_path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>  <span class="c1"># config parser object</span>
+
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># creates the initial config required for the bot to work</span>
+    <span class="c1"># ====================================================================</span>
+<div class="viewcode-block" id="Config.create_config"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config.create_config">[docs]</a>    <span class="k">def</span> <span class="nf">create_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">b_config</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="c1"># create the default config</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="s2">&quot;GENERAL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;ini_file_Path&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">,</span>
+                <span class="s2">&quot;source_dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_dir</span><span class="p">,</span>
+                <span class="s2">&quot;log_file&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+                <span class="s2">&quot;error_dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">error_dir</span><span class="p">,</span>
+                <span class="s2">&quot;unmatched_dir&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">unmatched_dir</span><span class="p">,</span>
+                <span class="s2">&quot;rotate_logs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate_logs</span><span class="p">,</span>
+                <span class="s2">&quot;rotation_size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_size</span>
+            <span class="p">}</span>
+
+            <span class="c1"># create the search config</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_client_config</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="s2">&quot;CLIENT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;criteria1&quot;</span><span class="p">:</span> <span class="s2">&quot;*.*&quot;</span>
+                <span class="p">}</span>
+
+                <span class="c1"># create the sftp config</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="s2">&quot;SFTP&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;sftp_ip&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sftp_ip</span><span class="p">,</span>
+                    <span class="s2">&quot;sftp_port&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sftp_port</span><span class="p">,</span>
+                    <span class="s2">&quot;sftp_path&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sftp_path</span><span class="p">,</span>
+                    <span class="s2">&quot;keystore_service_name&quot;</span><span class="p">:</span> <span class="n">cons</span><span class="o">.</span><span class="n">KEYSTORE_SERVICE_NAME</span><span class="p">,</span>
+                    <span class="s2">&quot;keystore_pem_name&quot;</span><span class="p">:</span> <span class="n">cons</span><span class="o">.</span><span class="n">KEYSTORE_PEM_NAME</span><span class="p">,</span>
+                    <span class="s2">&quot;private_key_path&quot;</span><span class="p">:</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">PRIVATE_KEY_PATH</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="s2">&quot;SERVER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;criteria1&quot;</span><span class="p">:</span> <span class="s2">&quot;search_word1, , /path/to/destination_directory1&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;criteria2&quot;</span><span class="p">:</span> <span class="s2">&quot;, file_type2, /path/to/destination_directory2&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;criteria3&quot;</span><span class="p">:</span> <span class="s2">&quot;search_word3, file_type3, /path/to/destination_directory3&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+
+                <span class="c1"># create the processes config</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="s2">&quot;PROCESSES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;num_processes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_processes</span><span class="p">,</span>
+                    <span class="s2">&quot;num_processes_scaling_factor&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaling_factor</span><span class="p">,</span>
+                    <span class="s2">&quot;min_processes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_processes</span>
+                <span class="p">}</span>
+
+            <span class="c1"># create the flags config</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="s2">&quot;FLAGS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;stop_flag&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span>
+            <span class="p">}</span>
+
+            <span class="c1"># create the required directories</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error_dir</span><span class="p">)</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unmatched_dir</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_client_config</span><span class="p">:</span>
+                <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">PRIVATE_KEY_PATH</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">PUBLIC_KEY_PATH</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># if the config file does not exist then create it</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">):</span>
+                <span class="c1"># write it to the config.ini file</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conf</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+
+            <span class="n">Utils</span><span class="o">.</span><span class="n">information</span><span class="p">(</span>
+                <span class="s2">&quot;The ini file for configuration is created successfully at &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># create the logger</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">config_file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;The ini file for configuration is created successfully&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_client_config</span><span class="p">:</span>
+                <span class="n">b_config</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">generate_ssh_key</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">error_message</span><span class="p">(</span><span class="n">error_message</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">b_config</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">b_config</span></div>
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># get the config file data</span>
+    <span class="c1"># ====================================================================</span>
+<div class="viewcode-block" id="Config.read_config"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config.read_config">[docs]</a>    <span class="k">def</span> <span class="nf">read_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">)</span></div>
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># store the pem file to keystore</span>
+    <span class="c1"># ====================================================================</span>
+<div class="viewcode-block" id="Config.store_pem_to_keystore"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config.store_pem_to_keystore">[docs]</a>    <span class="k">def</span> <span class="nf">store_pem_to_keystore</span><span class="p">(</span><span class="n">service_name</span><span class="p">,</span> <span class="n">private_key_name</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+        <span class="n">keyring</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">service_name</span><span class="p">,</span> <span class="n">private_key_name</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span></div>
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># get the pem file from the keystore</span>
+    <span class="c1"># ====================================================================</span>
+<div class="viewcode-block" id="Config.get_pem_from_keystore"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config.get_pem_from_keystore">[docs]</a>    <span class="k">def</span> <span class="nf">get_pem_from_keystore</span><span class="p">(</span><span class="n">service_name</span><span class="p">,</span> <span class="n">private_key_name</span><span class="p">):</span>
+        <span class="n">private_key_path</span> <span class="o">=</span> <span class="n">keyring</span><span class="o">.</span><span class="n">get_password</span><span class="p">(</span><span class="n">service_name</span><span class="p">,</span> <span class="n">private_key_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">private_key_path</span></div>
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># generate the private and public key file</span>
+    <span class="c1"># ====================================================================</span>
+<div class="viewcode-block" id="Config.generate_ssh_key"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config.generate_ssh_key">[docs]</a>    <span class="k">def</span> <span class="nf">generate_ssh_key</span><span class="p">():</span>
+
+        <span class="n">b_generate</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">key</span> <span class="o">=</span> <span class="n">paramiko</span><span class="o">.</span><span class="n">RSAKey</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>  <span class="c1"># generate the ssh key pair</span>
+
+            <span class="c1"># save it to a file</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">information</span><span class="p">(</span>
+                <span class="s2">&quot;Generating the private key file required for SFTP.&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">private_key_path</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">PRIVATE_KEY_PATH</span><span class="p">)</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">write_private_key_file</span><span class="p">(</span><span class="n">private_key_path</span><span class="p">)</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="s2">&quot;The private key file generated at &quot;</span> <span class="o">+</span>
+                              <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">private_key_path</span><span class="p">))</span>
+
+            <span class="c1"># save the public key to a file</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">information</span><span class="p">(</span>
+                <span class="s2">&quot;Generating the public key file required for SFTP.&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">public_key_path</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">full_path</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">PUBLIC_KEY_PATH</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">public_key_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">key</span><span class="o">.</span><span class="n">get_base64</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">information</span><span class="p">(</span><span class="s2">&quot;The private key file generated at &quot;</span> <span class="o">+</span>
+                              <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">public_key_path</span><span class="p">))</span>
+
+            <span class="c1"># store it to keystore</span>
+            <span class="n">Config</span><span class="o">.</span><span class="n">store_pem_to_keystore</span><span class="p">(</span>
+                <span class="n">cons</span><span class="o">.</span><span class="n">KEYSTORE_SERVICE_NAME</span><span class="p">,</span> <span class="n">cons</span><span class="o">.</span><span class="n">KEYSTORE_PEM_NAME</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
+
+            <span class="c1"># delete the local private key pem file once stored in the keystore</span>
+            <span class="n">private_key_from_keystore</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">get_pem_from_keystore</span><span class="p">(</span>
+                <span class="n">cons</span><span class="o">.</span><span class="n">KEYSTORE_SERVICE_NAME</span><span class="p">,</span> <span class="n">cons</span><span class="o">.</span><span class="n">KEYSTORE_PEM_NAME</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">private_key_from_keystore</span> <span class="o">==</span> <span class="n">private_key_path</span><span class="p">:</span>
+                <span class="n">Utils</span><span class="o">.</span><span class="n">information</span><span class="p">(</span>
+                    <span class="s2">&quot;Private key file stored in the keystore successfully&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">Utils</span><span class="o">.</span><span class="n">error_message</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not store the private key file to keystore&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">b_generate</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">error_message</span><span class="p">(</span><span class="n">error_message</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">b_generate</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="c1"># ====================================================================</span>
+    <span class="c1"># remove the local private key file after the keystore</span>
+    <span class="c1"># ====================================================================</span>
+<div class="viewcode-block" id="Config.delete_local_private_file"><a class="viewcode-back" href="../../../src.common.html#src.common.config.Config.delete_local_private_file">[docs]</a>    <span class="k">def</span> <span class="nf">delete_local_private_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File deleted successfully.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File not found.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Permission denied. Unable to delete the file.&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, group 3.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

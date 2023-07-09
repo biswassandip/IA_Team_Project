@@ -7,27 +7,29 @@ The objective of this project is to watch a source directory and move files base
 ## Python 3.10.2
 
 ## Dependencies
-### Package                    Version<br/>
+
+### Package Version<br/>
+
 -------<br/>
-altgraph                  0.17.3<br/>
-bcrypt                    4.0.1<br/>
-cffi                      1.15.1<br/>
-colorama                  0.4.6<br/>
-cryptography              41.0.1<br/>
-importlib-metadata        6.7.0<br/>
-jaraco.classes            3.2.3<br/>
-keyring                   24.2.0<br/>
-macholib                  1.16.2<br/>
-more-itertools            9.1.0<br/>
-paramiko                  3.2.0<br/>
-pip                       23.1.2<br/>
-pycparser                 2.21<br/>
-pyinstaller               5.13.0<br/>
+altgraph 0.17.3<br/>
+bcrypt 4.0.1<br/>
+cffi 1.15.1<br/>
+colorama 0.4.6<br/>
+cryptography 41.0.1<br/>
+importlib-metadata 6.7.0<br/>
+jaraco.classes 3.2.3<br/>
+keyring 24.2.0<br/>
+macholib 1.16.2<br/>
+more-itertools 9.1.0<br/>
+paramiko 3.2.0<br/>
+pip 23.1.2<br/>
+pycparser 2.21<br/>
+pyinstaller 5.13.0<br/>
 pyinstaller-hooks-contrib 2023.5<br/>
-PyNaCl                    1.5.0<br/>
-setuptools                58.1.0<br/>
-watchdog                  3.0.0<br/>
-zipp                      3.15.0<br/>
+PyNaCl 1.5.0<br/>
+setuptools 58.1.0<br/>
+watchdog 3.0.0<br/>
+zipp 3.15.0<br/>
 <br/>
 
 ## How the bot works?
@@ -44,7 +46,7 @@ rotate_logs = True<br/>
 rotation_size = 1000000<br/>
 <br/>
 [CLIENT]<br/>
-criteria1 = *.*<br/>
+criteria1 = _._<br/>
 <br/>
 [SFTP]<br/>
 sftp_ip = 22.22.22.22<br/>
@@ -58,6 +60,7 @@ private_key_path = /abc/def/IA_BOT/private_key.pem<br/>
 stop_flag = False<br/>
 
 ### 2. When the bot is setup as a SERVER, it will move files based on the criteria provided in the bot.ini file. Here the criteria can be combinations of word search + file type, word search only or file type only. Each criteria must be unique and accompanied with a destination directory where it needs to be moved
+
 <br/>
 [GENERAL]<br/>
 ini_file_path = /abc/def/IA_BOT/bot.ini<br/>
@@ -91,21 +94,22 @@ Execute the main program <b>bot_setup.py</b>. This will give you the below menu:
 =================================================<br/>
 BOT SETUP MENU<br/>
 =================================================<br/>
+
 1. Client BOT setup<br/>
 2. Server BOT setup<br/>
-<br/>
+   <br/>
 3. Start process<br/>
-<br/>
+   <br/>
 4. Stop process<br/>
-<br/>
+   <br/>
 5. Quit<br/>
-<br/>
-Enter your options between 1-5: <br/>
-<br/>
-<br/>
-Option 1 - would create the ini file and required setup for Client setup. After this review the bot.ini file and update it as required.<br/><br/>
-Option 2 - would create the ini file and required setup for Server setup. After this review the bot.ini file and update it as required.<br/><br/>
-Option 3 - now you can start the process and it will start based on the bot.ini configuration. Please note that any update in the ini file after starting processing would require to stop the process by updating <b>stop_flag=True</b> in the bot.ini file.<br/><br/>
-Option 4 - execute the bot_setup.py and when this option is selected then the process will be stopped. Alternatively, to stop the process by updating <b>stop_flag=True</b> in the bot.ini file.<br/><br/>
-Option 5 - will quit the options.<br/><br/>
-<br/>
+   <br/>
+   Enter your options between 1-5: <br/>
+   <br/>
+   <br/>
+   Option 1 - would create the ini file and required setup for Client setup. After this review the bot.ini file and update it as required.<br/><br/>
+   Option 2 - would create the ini file and required setup for Server setup. After this review the bot.ini file and update it as required.<br/><br/>
+   Option 3 - now you can start the process and it will start based on the bot.ini configuration. Please note that any update in the ini file after starting processing would require to stop the process by updating <b>stop_flag=True</b> in the bot.ini file.<br/><br/>
+   Option 4 - execute the bot_setup.py and when this option is selected then the process will be stopped. Alternatively, to stop the process by updating <b>stop_flag=True</b> in the bot.ini file.<br/><br/>
+   Option 5 - will quit the options.<br/><br/>
+   <br/>
