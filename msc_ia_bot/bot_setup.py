@@ -11,7 +11,7 @@
 from common.utils import Utils
 from common.config import Config
 import configparser
-import fw_bot
+import common.fw_bot as fw_bot
 
 dir_to_monitor = None
 move_files_to = None
