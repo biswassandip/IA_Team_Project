@@ -19,6 +19,8 @@ class Utils:
     # ====================================================================
     @staticmethod
     def _print_it(prompt, msg_type=1, newline=False, plus_line=False):
+
+
         msg_color = None
         msg_prompt = prompt
 

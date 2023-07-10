@@ -21,6 +21,7 @@ sftp_path = None
 
 
 def display_setup_menu():
+
     Utils.custom_print(
         f"=================================================", True)
     Utils.custom_print(f"BOT SETUP MENU")
@@ -33,6 +34,7 @@ def display_setup_menu():
 
 
 def process_menu(option):
+
     match option:
         case 1:
             print(f"You selected option 1 for a CLIENT setup")
