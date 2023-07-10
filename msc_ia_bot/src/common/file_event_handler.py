@@ -28,8 +28,6 @@ class FileMoveEventHandler(FileSystemEventHandler):
 
         # get all the default paths
         self.source_dir = config.get('GENERAL', 'source_dir')
-        self.error_dir = config.get('GENERAL', 'error_dir')
-        self.unmatched_dir = config.get('GENERAL', 'unmatched_dir')  
 
         # to handle redundant file events
         self.last_processed_timestamp = None 
@@ -75,7 +73,9 @@ class FileMoveEventHandler(FileSystemEventHandler):
             # get the respective criteria values
             search_word = self.condition_map[criteria][0]
             file_type = self.condition_map[criteria][1]
-            destination_dir = self.condition_map[criteria][2]
+            sftp_host = self.condition_map[criteria][2]
+            sftp_port = self.condition_map[criteria][3]
+            destination_dir = self.condition_map[criteria][4]
 
             # booleans for respective operations
             b_search_on_file_type = False
@@ -112,11 +112,9 @@ class FileMoveEventHandler(FileSystemEventHandler):
                 b_matched = True
                 break
 
-        # through the criteria if no match is found then move the file to unmatched
+        # through the criteria if no match is found
         if (not b_matched):
-            self.move_file_to_destination(file_path,file_name,self.unmatched_dir)                    
-            self.logger.warning(
-                f"File '{file_path}' does not match any conditions. Moved to '{self.unmatched_dir}'")
+            self.logger.warning(f"File '{file_path}' does not match any conditions.")
 
     # ====================================================================
     # search a word in the file
@@ -132,9 +130,6 @@ class FileMoveEventHandler(FileSystemEventHandler):
     # move the file to destination
     # ====================================================================
     def move_file_to_destination(self, file_path, file_name, destination_dir):
-        if destination_dir=="CLIENT":
-            print(f"TO DO sftp")
-        else:
-            Utils.create_dir(destination_dir)
-            destination_path = os.path.join(destination_dir, file_name)
-            shutil.move(file_path, destination_path)
+        Utils.create_dir(destination_dir)
+        destination_path = os.path.join(destination_dir, file_name)
+        shutil.move(file_path, destination_path)

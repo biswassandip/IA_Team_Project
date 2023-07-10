@@ -52,11 +52,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-src.bot_setup">src.bot_setup module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.client_setup"><code class="docutils literal notranslate"><span class="pre">client_setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.bot_config_setup"><code class="docutils literal notranslate"><span class="pre">bot_config_setup()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.display_setup_menu"><code class="docutils literal notranslate"><span class="pre">display_setup_menu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.process_menu"><code class="docutils literal notranslate"><span class="pre">process_menu()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.server_setup"><code class="docutils literal notranslate"><span class="pre">server_setup()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.start_process"><code class="docutils literal notranslate"><span class="pre">start_process()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#src.bot_setup.stop_process"><code class="docutils literal notranslate"><span class="pre">stop_process()</span></code></a></li>
 </ul>
@@ -104,11 +103,7 @@
 <li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common.config">src.common.config module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="src.common.html#src.common.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="src.common.html#src.common.config.Config.create_config"><code class="docutils literal notranslate"><span class="pre">Config.create_config()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.common.html#src.common.config.Config.delete_local_private_file"><code class="docutils literal notranslate"><span class="pre">Config.delete_local_private_file()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.common.html#src.common.config.Config.generate_ssh_key"><code class="docutils literal notranslate"><span class="pre">Config.generate_ssh_key()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.common.html#src.common.config.Config.get_pem_from_keystore"><code class="docutils literal notranslate"><span class="pre">Config.get_pem_from_keystore()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.common.html#src.common.config.Config.read_config"><code class="docutils literal notranslate"><span class="pre">Config.read_config()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.common.html#src.common.config.Config.store_pem_to_keystore"><code class="docutils literal notranslate"><span class="pre">Config.store_pem_to_keystore()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -167,40 +162,99 @@
 </section>
 <section id="module-src.bot_setup">
 <span id="src-bot-setup-module"></span><h2>src.bot_setup module<a class="headerlink" href="#module-src.bot_setup" title="Permalink to this heading"></a></h2>
+<p><strong>Module:</strong> bot_setup.py</p>
+<p>This module is the start module that has the responsibilities to fulfill the setup of the bot.</p>
+<p>It provides the user with a menu that has options to choose from:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Setup requirements to create an ini file that the bot will use.</p></li>
+<li><p>Start the bot.</p></li>
+<li><p>Stop the bot.</p></li>
+<li><p>Quit the setup.</p></li>
+</ul>
+</div></blockquote>
+<p>Based on the chosen options, this module will decide on creating the required ini file (<strong>bot_config.ini</strong>).
+The <strong>User</strong> is expected to review the ini file and update it as required before rerunning the bot_setup.py
+to start the process.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="src.bot_setup.client_setup">
-<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">client_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#client_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.client_setup" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="src.bot_setup.bot_config_setup">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">bot_config_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#bot_config_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.bot_config_setup" title="Permalink to this definition"></a></dt>
+<dd><p><strong>Method:</strong> bot_config_setup</p>
+<p>This method will trigger the creation of the actual config ini file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.display_setup_menu">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">display_setup_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#display_setup_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.display_setup_menu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> display_setup_menu</p>
+<p>This method is responsible to display the menu options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.process_menu">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">process_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#process_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.process_menu" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> process_menu</p>
+<p>This method is responsible to process the functionality behind the chosen option from the menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>option</strong> (<em>int</em>) – This is the expected option between 1 to 4.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Responses with a boolean (True or False) after the functionality for an option is executed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.run">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.run" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="src.bot_setup.server_setup">
-<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">server_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#server_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.server_setup" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> run</p>
+<p>This method is the main method that will execute the bot setup process.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.start_process">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">start_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#start_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.start_process" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> start_process</p>
+<p>This method will start the file monitoring process by updating the stop_flag to False in the ini file
+and triggering the fw_bot.monitor_files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.stop_process">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">stop_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#stop_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.stop_process" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> stop_process</p>
+<p>This method will stop the file monitoring process by updating the stop_flag to True in the ini file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-src">

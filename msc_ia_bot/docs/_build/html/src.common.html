@@ -91,39 +91,94 @@
 </section>
 <section id="module-src.common.config">
 <span id="src-common-config-module"></span><h2>src.common.config module<a class="headerlink" href="#module-src.common.config" title="Permalink to this heading"></a></h2>
+<p><strong>Module:</strong> Config.py</p>
+<p>This class is responsible to create the bot_config.ini file.
+By default, the ini file is created within ./IA_BOT directory.</p>
+<p>The entries within the ini file is used dynamically by the program to perform the required functionality based on the <strong>BOT_RULES</strong> configurations.
+The <strong>BOT_RULES</strong> configuration is based on what is required for the criteria.
+The criteria can be provided as comma separated rules for example:</p>
+<p>Note that the structure the BOT_RULES criteria is a comma separated string that can comprise of:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>criteria1 - this is the <strong>MANDATORY</strong> name given to the rule. The name of the rule <strong>MUST</strong> be <strong>UNIQUE</strong>.</p></li>
+<li><p>search_word - this could be any word that needs to be searched. Either or Both search_word and file_type <strong>MUST</strong> be provided.</p></li>
+<li><p>sftp_host - this is the sftp host or IP address. <strong>Mandatory</strong> only if the file needs to be SFTP’ed.</p></li>
+<li><p>sftp_port - this is the port number. <strong>Mandatory</strong> only if the file needs to be SFTP’ed.</p></li>
+<li><p>destination_dir - path where the file needs to be moved. This is <strong>MANDATORY</strong></p></li>
+</ul>
+</div></blockquote>
+<dl>
+<dt>Some examples are given below:</dt><dd><ul class="simple">
+<li><p>Example; criteria1: business, <a href="#id1"><span class="problematic" id="id2">*</span></a>.doc, 22.22.22.22, 456, /remote/sftp/path/dir1</p></li>
+</ul>
+<p>In this case, if the word “business” is found in the file then it will be sftp’ed to the given directory.</p>
+<ul class="simple">
+<li><p>Example; criteria1: business, , 22.22.22.22, 456, /remote/sftp/path/dir2</p></li>
+</ul>
+<p>In this case, if the word “business” is found in the any file then it will be sftp’ed to the given directory.</p>
+<ul class="simple">
+<li><p>Example; criteria1: ,*.doc , 22.22.22.22, 456, /remote/sftp/path/dir3</p></li>
+</ul>
+<p>In this case, if the file type of <a href="#id3"><span class="problematic" id="id4">*</span></a>.doc then it will be sftp’ed to the given directory.</p>
+<ul class="simple">
+<li><p>Example; criteria1: business ,*.doc , , , /local/dir1</p></li>
+</ul>
+<p>In this case, if the word “business” is found in the file then it will be moved to the given directory.</p>
+</dd>
+</dl>
+<p>and so on….</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.common.config.Config">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./IA_BOT/bot.ini'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_client_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./IA_BOT/log/bot_log.log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./IA_BOT/error/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unmatched_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./IA_BOT/unmatched/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotate_logs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_processes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_processes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sftp_ip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sftp_port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sftp_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./IA_BOT/bot.ini'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is initialized at the minimum with the ini file path so that the bot_config.ini file can be created.
+The ini files is created by default at “./IA_BOT/bot.ini”.
+Note that if the source path is not provided then the current path will be considered source where all the files
+will be processed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ini_file_path</strong> – Ths will be the path where the ini file needs to be created.</p></li>
+<li><p><strong>source_dir</strong> – Ths will be the source directory that is required to be monitored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.config.Config.create_config">
 <span class="sig-name descname"><span class="pre">create_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config.create_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config.create_config" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.config.Config.delete_local_private_file">
-<span class="sig-name descname"><span class="pre">delete_local_private_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config.delete_local_private_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config.delete_local_private_file" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> create_config</p>
+<p>This method will create the actual config file with required configurations for:</p>
+<ul class="simple">
+<li><p>[GENERAL] - consists of  general settings like ini file path, source directory, etc.</p></li>
+<li><p>[BOT_RULES] - consists of the various combinations for the rules criteria</p></li>
+<li><p>[SFTP_KEYS] - provides with the private key path</p></li>
+<li><p>[PROCESSES] -  settings for number of processes to be run</p></li>
+<li><p>[FLAGS] - settings to stop the process (=True)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.config.Config.generate_ssh_key">
 <span class="sig-name descname"><span class="pre">generate_ssh_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config.generate_ssh_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config.generate_ssh_key" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.config.Config.get_pem_from_keystore">
-<span class="sig-name descname"><span class="pre">get_pem_from_keystore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config.get_pem_from_keystore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config.get_pem_from_keystore" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.config.Config.read_config">
-<span class="sig-name descname"><span class="pre">read_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config.read_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config.read_config" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.config.Config.store_pem_to_keystore">
-<span class="sig-name descname"><span class="pre">store_pem_to_keystore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">private_key_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">private_key_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/config.html#Config.store_pem_to_keystore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.config.Config.store_pem_to_keystore" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Method:</strong> generate_ssh_key</p>
+<p>This method generates the private and public key files.
+Please note that the private key file should not be shared with anyone and kept in a safe place.
+Update the private key file path in the bot_config.ini file so that it can be used to SFTP.</p>
+<p>To enable smooth SFTP, the public key must be shared with the SFTP server admin so that it can added to the server config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

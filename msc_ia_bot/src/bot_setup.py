@@ -1,63 +1,80 @@
-# --------------------------------------------------------------------
-# file name: bot_setup.py
-# description: this program is the starting point to deploying and
-# creating the required files and configurations to setup the bot
-# --------------------------------------------------------------------
+"""
+**Module:** bot_setup.py
 
+This module is the start module that has the responsibilities to fulfill the setup of the bot.
 
-# ====================================================================
-# 1.1. create the ini file - bot_config.ini
-# ====================================================================
+It provides the user with a menu that has options to choose from:
+
+    * Setup requirements to create an ini file that the bot will use.
+    * Start the bot.
+    * Stop the bot.
+    * Quit the setup.
+
+Based on the chosen options, this module will decide on creating the required ini file (**bot_config.ini**).
+The **User** is expected to review the ini file and update it as required before rerunning the bot_setup.py 
+to start the process.
+"""
+
 from common.utils import Utils
 from common.config import Config
 import configparser
 import common.fw_bot as fw_bot
-
-dir_to_monitor = None
-move_files_to = None
-sftp_ip = None
-sftp_port = None
-sftp_path = None
-
+import subprocess
+import sys
 
 def display_setup_menu():
+    """
+    **Method:** display_setup_menu
 
-    Utils.custom_print(
-        f"=================================================", True)
+    This method is responsible to display the menu options.
+
+    :param: None
+    :return: None
+    :rtype: None
+    """
+
+    Utils.custom_print(f"=================================================", True)
     Utils.custom_print(f"BOT SETUP MENU")
     Utils.custom_print(f"=================================================")
-    Utils.custom_print(f"1. Client BOT setup")
-    Utils.custom_print(f"2. Server BOT setup")
-    Utils.custom_print(f"3. Start process", True, True)
-    Utils.custom_print(f"4. Stop process")
-    Utils.custom_print(f"5. Quit", True, True)
+    Utils.custom_print(f"1. BOT setup")
+    
+    Utils.custom_print(f"2. Start process", True, True)
+    Utils.custom_print(f"3. Stop process")
+    
+    Utils.custom_print(f"4. Quit", True, True)
+    Utils.custom_print(f"=================================================",None,True)
 
 
 def process_menu(option):
+    """
+    **Method:** process_menu
+
+    This method is responsible to process the functionality behind the chosen option from the menu.
+
+    :param option: This is the expected option between 1 to 4.
+    :type option: int 
+    :return: Responses with a boolean (True or False) after the functionality for an option is executed
+    :rtype: boolean
+    """
 
     match option:
         case 1:
-            print(f"You selected option 1 for a CLIENT setup")
+            print(f"You selected option 1 for a BOT setup")
             print(f"")
-            return client_setup()
+            return bot_config_setup()
 
         case 2:
-            print(f"You selected option 2 for a SERVER setup")
-            print(f"")
-            return server_setup()
-
-        case 3:
-            print(f"You selected option 3 to START process")
+            print(f"You selected option 2 to START process")
             print(f"")
             return start_process()
         
-        case 4:
-            print(f"You selected option 4 to STOP process")
+        case 3:
+            print(f"You selected option 3 to STOP process")
             print(f"")
             return stop_process()
         
-        case 5:
-            print(f"You selected option 5 to QUIT")
+        case 4:
+            print(f"You selected option 4 to QUIT")
             print(f"")
 
         case _:
@@ -65,19 +82,20 @@ def process_menu(option):
             print(f"")
 
 
-def client_setup():
+def bot_config_setup():
+    """
+    **Method:** bot_config_setup
+
+    This method will trigger the creation of the actual config ini file.
+
+    :rtype: boolean
+    """
 
     b_setup = True
 
     # accept the data
     source_dir = Utils.custom_input(
         "1.1. Provide the directory to be monitored and then press ENTER: ")
-    sftp_ip = Utils.custom_input(
-        "1.2. Provide the SFTP host IP/address and then press ENTER: ")
-    sftp_port = Utils.custom_input(
-        "1.3. Provide the SFTP port number and then press ENTER: ")
-    sftp_path = Utils.custom_input(
-        "1.4. Provide the SFTP remote path and then press ENTER: ")
 
     # validate the inputs
     if not Utils.validate_dir_pattern(source_dir):
@@ -85,53 +103,23 @@ def client_setup():
             prompt="The DIR path provided in 1.1. is not valid!")
         b_setup = False
 
-    if not Utils.validate_ip_pattern(sftp_ip):
-        Utils.error_message(
-            prompt="The IP address provided in 1.3. is not valid!")
-        b_setup = False
-
-    if not Utils.validate_port_pattern(sftp_port):
-        Utils.error_message(
-            prompt="The Port Number provided in 1.4. is not valid!")
-        b_setup = False
-
-    if not Utils.validate_dir_pattern(sftp_path):
-        Utils.error_message(
-            prompt="The Remote Path provided in 1.5. is not valid!")
-        b_setup = False
-
     # now create the required config
     if b_setup:
-        config = Config(source_dir=source_dir, sftp_ip=sftp_ip,
-                        sftp_port=sftp_port, sftp_path=sftp_path)
-
-        b_setup = config.create_config()
-
-    return b_setup
-
-def server_setup():
-
-    b_setup = True
-
-    # accept the data
-    source_dir = Utils.custom_input(
-        "2.1. Provide the directory to be monitored and then press ENTER: ")
-
-    # validate the inputs
-    if not Utils.validate_dir_pattern(source_dir):
-        Utils.error_message(
-            prompt="The DIR path provided in 2.1. is not valid!")
-        b_setup = False
-
-    # now create the required config
-    if b_setup:
-        config = Config(source_dir=source_dir,is_client_config=False)
+        config = Config(source_dir=source_dir)
 
         b_setup = config.create_config()
 
     return b_setup
 
 def start_process():
+    """
+    **Method:** start_process
+
+    This method will start the file monitoring process by updating the stop_flag to False in the ini file
+    and triggering the fw_bot.monitor_files.
+
+    :rtype: boolean
+    """
 
     b_setup = True
 
@@ -164,9 +152,25 @@ def start_process():
         config.read(config_file)
         fw_bot.monitor_files(config)
 
+        try:
+            process = subprocess.Popen(['nohup', 'python', './common/monitor_files.py', '&'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
+
+            print(f"testing....")
+        except:
+            error_message = str(sys.exc_info()[1])
+            Utils.error_message(error_message, True)
+            b_setup =  False
+
     return b_setup
 
 def stop_process():
+    """
+    **Method:** stop_process
+
+    This method will stop the file monitoring process by updating the stop_flag to True in the ini file.
+
+    :rtype: boolean
+    """
 
     b_setup = True
 
@@ -197,23 +201,31 @@ def stop_process():
     return b_setup
 
 def run():
+    """
+    **Method:** run
+
+    This method is the main method that will execute the bot setup process.
+
+    """
+
     while True:
         display_setup_menu()
 
         try:
             b_process = False
             option = int(Utils.custom_input(
-                "Enter your options between 1-5: "))
+                "Enter your options between 1-4: "))
             b_process = process_menu(option)
 
-            if option == 5 or b_process:
+            if option == 4 or b_process:
                 break
         except ValueError:
             print(f"")
-            print(f"The entered option should be between 1-5!")
+            print(f"The entered option should be between 1-4!")
         except KeyboardInterrupt:
             print(f"")
             print(f"The program was exited by user!")
             break
 
+# run the process
 run()

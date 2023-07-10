@@ -1,7 +1,37 @@
-# --------------------------------------------------------------------
-# file name: config.py
-# description: this class is used for config related methods
-# --------------------------------------------------------------------
+"""
+**Module:** Config.py
+
+This class is responsible to create the bot_config.ini file.
+By default, the ini file is created within ./IA_BOT directory.
+
+The entries within the ini file is used dynamically by the program to perform the required functionality based on the **BOT_RULES** configurations.
+The **BOT_RULES** configuration is based on what is required for the criteria.
+The criteria can be provided as comma separated rules for example:
+
+Note that the structure the BOT_RULES criteria is a comma separated string that can comprise of:
+
+    * criteria1 - this is the **MANDATORY** name given to the rule. The name of the rule **MUST** be **UNIQUE**.
+    * search_word - this could be any word that needs to be searched. Either or Both search_word and file_type **MUST** be provided.
+    * sftp_host - this is the sftp host or IP address. **Mandatory** only if the file needs to be SFTP'ed.
+    * sftp_port - this is the port number. **Mandatory** only if the file needs to be SFTP'ed.
+    * destination_dir - path where the file needs to be moved. This is **MANDATORY**
+
+Some examples are given below:
+    * Example; criteria1: business, *.doc, 22.22.22.22, 456, /remote/sftp/path/dir1
+    In this case, if the word "business" is found in the file then it will be sftp'ed to the given directory.
+
+    * Example; criteria1: business, , 22.22.22.22, 456, /remote/sftp/path/dir2
+    In this case, if the word "business" is found in the any file then it will be sftp'ed to the given directory.
+
+    * Example; criteria1: ,*.doc , 22.22.22.22, 456, /remote/sftp/path/dir3
+    In this case, if the file type of *.doc then it will be sftp'ed to the given directory.
+
+    * Example; criteria1: business ,*.doc , , , /local/dir1
+    In this case, if the word "business" is found in the file then it will be moved to the given directory.
+
+and so on....
+"""
+
 from configparser import ConfigParser
 from common.utils import Utils
 import common.constants as cons
@@ -10,54 +40,60 @@ from common.logger import Logger
 import os
 import sys
 import paramiko
-import keyring
 import os
 
 
 class Config:
 
-    # ====================================================================
-    # initialize all the required values
-    # ====================================================================
+    """
+    This class is initialized at the minimum with the ini file path so that the bot_config.ini file can be created.
+    The ini files is created by default at "./IA_BOT/bot.ini".
+    Note that if the source path is not provided then the current path will be considered source where all the files 
+    will be processed.
+
+    :param ini_file_path: Ths will be the path where the ini file needs to be created.
+    :type option: string 
+
+    :param source_dir: Ths will be the source directory that is required to be monitored.
+    :type option: string 
+    
+    :return: None
+    """
+
     def __init__(self,
                  ini_file_path=cons.INI_FILE_PATH,
                  source_dir=None,
-                 is_client_config=True,
-                 log_file=cons.LOG_FILE,
-                 error_dir=cons.ERROR_DIR,
-                 unmatched_dir=cons.UNMATCHED_DIR,
-                 rotate_logs=cons.ROTATE_LOGS,
-                 rotation_size=cons.ROTATION_SIZE,
-                 num_processes=cons.MIN_PROCESSES,
-                 scaling_factor=cons.SCALING_FACTOR,
-                 min_processes=cons.MIN_PROCESSES,
-                 sftp_ip=None,
-                 sftp_port=None,
-                 sftp_path=None,
                  ) -> None:
+
+
 
         self.ini_file_path = Utils.full_path(ini_file_path)
         self.source_dir = Utils.full_path(source_dir)
-        self.is_client_config=is_client_config
-        self.log_file = Utils.full_path(log_file)
-        self.error_dir = Utils.full_path(error_dir)
-        self.unmatched_dir = Utils.full_path(unmatched_dir)
-        self.rotate_logs = rotate_logs
-        self.rotation_size = rotation_size
-        self.num_processes = num_processes
-        self.scaling_factor = scaling_factor
-        self.min_processes = min_processes
-        self.sftp_ip = sftp_ip
-        self.sftp_port = sftp_port
-        self.sftp_path = sftp_path
+        self.log_file = Utils.full_path(cons.LOG_FILE)
+        self.rotate_logs = cons.ROTATE_LOGS
+        self.rotation_size = cons.ROTATION_SIZE
+        self.num_processes = cons.NUM_PROCESSES
+        self.scaling_factor = cons.SCALING_FACTOR
+        self.min_processes = cons.MIN_PROCESSES
 
         self.cp_obj = ConfigParser()  # config parser object
 
 
-    # ====================================================================
-    # creates the initial config required for the bot to work
-    # ====================================================================
     def create_config(self):
+        """
+        **Method:** create_config
+
+        This method will create the actual config file with required configurations for:
+
+        * [GENERAL] - consists of  general settings like ini file path, source directory, etc.
+        * [BOT_RULES] - consists of the various combinations for the rules criteria
+        * [SFTP_KEYS] - provides with the private key path
+        * [PROCESSES] -  settings for number of processes to be run
+        * [FLAGS] - settings to stop the process (=True)
+        
+        :return: boolean
+        """
+
         b_config = True
 
         try:
@@ -67,54 +103,43 @@ class Config:
                 "ini_file_Path": self.ini_file_path,
                 "source_dir": self.source_dir,
                 "log_file": self.log_file,
-                "error_dir": self.error_dir,
                 "unmatched_dir": self.unmatched_dir,
                 "rotate_logs": self.rotate_logs,
                 "rotation_size": self.rotation_size
             }
 
             # create the search config
-            if self.is_client_config:
-                self.cp_obj["CLIENT"] = {
-                    "criteria1": "*.*"
-                }
+            self.cp_obj["BOT_RULES"] = {
+                "criteria1": "search_word, file_type, sftp_host, sftp_port, destination_dir",
+                "criteria2": "search_word, , sftp_host, sftp_port, destination_dir",
+                "criteria3": ", file_type, sftp_host, sftp_port, destination_dir",
+                "criteria4": "search_word, file_type, , , destination_dir",
+                "criteria5": "search_word, , , , destination_dir",
+                "criteria6": ", file_type, , , destination_dir",
+            }
 
-                # create the sftp config
-                self.cp_obj["SFTP"] = {
-                    "sftp_ip": self.sftp_ip,
-                    "sftp_port": self.sftp_port,
-                    "sftp_path": self.sftp_path,
-                    "keystore_service_name": cons.KEYSTORE_SERVICE_NAME,
-                    "keystore_pem_name": cons.KEYSTORE_PEM_NAME,
-                    "private_key_path": Utils.full_path(cons.PRIVATE_KEY_PATH)
-                }
-            else:
-                self.cp_obj["SERVER"] = {
-                    "criteria1": "search_word1, , /path/to/destination_directory1",
-                    "criteria2": ", file_type2, /path/to/destination_directory2",
-                    "criteria3": "search_word3, file_type3, /path/to/destination_directory3",
-                }
+            # create the keys config
+            self.cp_obj["SFTP_KEYS"] = {
+                "pf_file": cons.PRIVATE_KEY_PATH,
+            }
 
-                # create the processes config
-                self.cp_obj["PROCESSES"] = {
-                    "num_processes": self.num_processes,
-                    "num_processes_scaling_factor": self.scaling_factor,
-                    "min_processes": self.min_processes
-                }
+            # create the processes config
+            self.cp_obj["PROCESSES"] = {
+                "num_processes": self.num_processes,
+                "num_processes_scaling_factor": self.scaling_factor,
+                "min_processes": self.min_processes
+            }
 
             # create the flags config
             self.cp_obj["FLAGS"] = {
-                "stop_flag": "False"
+                "stop_flag": "True"
             }
 
             # create the required directories
             Utils.create_dir(self.log_file, True)
-            Utils.create_dir(self.error_dir)
-            Utils.create_dir(self.unmatched_dir)
 
-            if self.is_client_config:
-                Utils.create_dir(cons.PRIVATE_KEY_PATH, True)
-                Utils.create_dir(cons.PUBLIC_KEY_PATH, True)
+            Utils.create_dir(cons.PRIVATE_KEY_PATH, True)
+            Utils.create_dir(cons.PUBLIC_KEY_PATH, True)
 
             # if the config file does not exist then create it
             if not os.path.isfile(self.ini_file_path):
@@ -131,8 +156,7 @@ class Config:
             self.logger.info(
                 "The ini file for configuration is created successfully")
 
-            if self.is_client_config:
-                b_config = Config.generate_ssh_key()
+            b_config = self.generate_ssh_key()
         except:
             error_message = str(sys.exc_info()[1])
             Utils.error_message(error_message, True)
@@ -141,29 +165,18 @@ class Config:
 
         return b_config
 
-    # ====================================================================
-    # get the config file data
-    # ====================================================================
-    def read_config(self):
-        return self.cp_obj.read(self.ini_file_path)
+    def generate_ssh_key(self):
+        """
+        **Method:** generate_ssh_key
 
-    # ====================================================================
-    # store the pem file to keystore
-    # ====================================================================
-    def store_pem_to_keystore(service_name, private_key_name, private_key_path):
-        keyring.set_password(service_name, private_key_name, private_key_path)
+        This method generates the private and public key files.
+        Please note that the private key file should not be shared with anyone and kept in a safe place.
+        Update the private key file path in the bot_config.ini file so that it can be used to SFTP.
 
-    # ====================================================================
-    # get the pem file from the keystore
-    # ====================================================================
-    def get_pem_from_keystore(service_name, private_key_name):
-        private_key_path = keyring.get_password(service_name, private_key_name)
-        return private_key_path
+        To enable smooth SFTP, the public key must be shared with the SFTP server admin so that it can added to the server config.
 
-    # ====================================================================
-    # generate the private and public key file
-    # ====================================================================
-    def generate_ssh_key():
+        :return: boolean
+        """
 
         b_generate = True
 
@@ -188,33 +201,9 @@ class Config:
             Utils.information("The private key file generated at " +
                               os.path.abspath(public_key_path))
 
-            # store it to keystore
-            Config.store_pem_to_keystore(
-                cons.KEYSTORE_SERVICE_NAME, cons.KEYSTORE_PEM_NAME, private_key_path)
-
-            # delete the local private key pem file once stored in the keystore
-            private_key_from_keystore = Config.get_pem_from_keystore(
-                cons.KEYSTORE_SERVICE_NAME, cons.KEYSTORE_PEM_NAME)
-            if private_key_from_keystore == private_key_path:
-                Utils.information(
-                    "Private key file stored in the keystore successfully", True)
-            else:
-                Utils.error_message(
-                    "Could not store the private key file to keystore", True)
-                b_generate = False
         except:
             error_message = str(sys.exc_info()[1])
             Utils.error_message(error_message, True)
             b_generate = False
 
-    # ====================================================================
-    # remove the local private key file after the keystore
-    # ====================================================================
-    def delete_local_private_file(file_path):
-        try:
-            os.remove(file_path)
-            print("File deleted successfully.")
-        except FileNotFoundError:
-            print("File not found.")
-        except PermissionError:
-            print("Permission denied. Unable to delete the file.")
+        return b_generate
