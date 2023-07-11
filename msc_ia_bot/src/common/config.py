@@ -86,6 +86,7 @@ class Config:
         This method will create the actual config file with required configurations for:
 
         * [GENERAL] - consists of  general settings like ini file path, source directory, etc.
+        * [SEARCH_IN_FILE_TYPES] - consists of filter types that will be included and excluded in word search.
         * [BOT_RULES] - consists of the various combinations for the rules criteria
         * [SFTP_KEYS] - provides with the private key path
         * [PROCESSES] -  settings for number of processes to be run
@@ -99,17 +100,22 @@ class Config:
         try:
 
             # create the default config
-            self.cp_obj["GENERAL"] = {
-                "ini_file_Path": self.ini_file_path,
-                "source_dir": self.source_dir,
-                "log_file": self.log_file,
-                "unmatched_dir": self.unmatched_dir,
-                "rotate_logs": self.rotate_logs,
-                "rotation_size": self.rotation_size
+            self.cp_obj[cons.INI_HEADER_GENERAL] = {
+                cons.KEY_INI_FILE_PATH: self.ini_file_path,
+                cons.KEY_SOURCE_DIR: self.source_dir,
+                cons.KEY_LOG_FILE: self.log_file,
+                cons.KEY_ROTATION_LOGS: self.rotate_logs,
+                cons.KEY_ROTATION_SIZE: self.rotation_size
+            }
+
+            # create the search file types for include and exclude
+            self.cp_obj[cons.INI_HEADER_SEARCH_IN_FILE_TYPES] = {
+                cons.KEY_INCLUDE: cons.VALUE_INCLUDE,
+                cons.KEY_EXCLUDE: cons.VALUE_EXCLUDE,
             }
 
             # create the search config
-            self.cp_obj["BOT_RULES"] = {
+            self.cp_obj[cons.INI_HEADER_BOT_RULES] = {
                 "criteria1": "search_word, file_type, sftp_host, sftp_port, destination_dir",
                 "criteria2": "search_word, , sftp_host, sftp_port, destination_dir",
                 "criteria3": ", file_type, sftp_host, sftp_port, destination_dir",
@@ -119,20 +125,20 @@ class Config:
             }
 
             # create the keys config
-            self.cp_obj["SFTP_KEYS"] = {
-                "pf_file": cons.PRIVATE_KEY_PATH,
+            self.cp_obj[cons.INI_HEADER_SFTP_KEYS] = {
+                cons.KEY_PF_FILE: cons.PRIVATE_KEY_PATH,
             }
 
             # create the processes config
-            self.cp_obj["PROCESSES"] = {
-                "num_processes": self.num_processes,
-                "num_processes_scaling_factor": self.scaling_factor,
-                "min_processes": self.min_processes
+            self.cp_obj[cons.INI_HEADER_PROCESSES] = {
+                cons.KEY_NUM_PROCESSES: self.num_processes,
+                cons.KEY_SCALING_FACTOR: self.scaling_factor,
+                cons.KEY_MIN_PROCESSES: self.min_processes
             }
 
             # create the flags config
-            self.cp_obj["FLAGS"] = {
-                "stop_flag": "True"
+            self.cp_obj[cons.INI_HEADER_FLAGS] = {
+                cons.KEY_STOP_FLAG: cons.STOP_FLAG
             }
 
             # create the required directories

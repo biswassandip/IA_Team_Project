@@ -26,7 +26,7 @@ class Logger:
         self.logger = logging.getLogger(cons.LOGGING_ID)
         self.logger.setLevel(logging.INFO)
 
-        self.log_file = self.config.get('GENERAL', 'log_file')
+        self.log_file = self.config.get(cons.INI_HEADER_GENERAL, cons.KEY_LOG_FILE)
 
         handler = RotatingFileHandler(
             self.log_file, maxBytes=1024*1024, backupCount=5)

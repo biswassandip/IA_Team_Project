@@ -10,7 +10,7 @@ import fnmatch
 from watchdog.events import FileSystemEventHandler
 from common.logger import Logger
 from common.utils import Utils
-
+import common.constants as cons
 
 class FileMoveEventHandler(FileSystemEventHandler):
 
@@ -19,14 +19,14 @@ class FileMoveEventHandler(FileSystemEventHandler):
     # ====================================================================
     def __init__(self, config, condition_map):
         self.config = config
-        self.ini_file_path = self.config.get('GENERAL', 'ini_file_path')
+        self.ini_file_path = self.config.get(cons.INI_HEADER_GENERAL, cons.KEY_INI_FILE_PATH)
         self.condition_map = condition_map
 
         # create the logger
         self.logger = Logger(config_file_path=self.ini_file_path)
 
         # get all the default paths
-        self.source_dir = config.get('GENERAL', 'source_dir')
+        self.source_dir = config.get(cons.INI_HEADER_GENERAL, cons.KEY_SOURCE_DIR)
 
         # to handle redundant file events
         self.last_processed_timestamp = None 
