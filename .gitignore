@@ -13,4 +13,5 @@ src/__pycache__
 src/.pytest_cache
 bin
 build
-src/common/__pycache__
+src/common/general_handlers/__pycache__
+src/common/file_handlers/__pycache__

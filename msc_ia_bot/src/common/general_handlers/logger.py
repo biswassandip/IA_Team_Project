@@ -5,7 +5,7 @@
 
 import logging
 from logging.handlers import RotatingFileHandler
-import common.constants as cons
+import common.general_handlers.constants as cons
 import configparser
 
 

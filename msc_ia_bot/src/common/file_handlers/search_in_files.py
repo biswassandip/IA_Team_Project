@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from PyPDF2 import PdfFileReader, PdfReader
 import zipfile
 import sys
-import common.constants as cons
+import common.general_handlers.constants as cons
 
 class SearchInFiles:
 

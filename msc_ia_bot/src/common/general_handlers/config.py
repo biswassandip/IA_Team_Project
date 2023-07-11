@@ -33,9 +33,9 @@ and so on....
 """
 
 from configparser import ConfigParser
-from common.utils import Utils
-import common.constants as cons
-from common.logger import Logger
+from common.general_handlers.utils import Utils
+import common.general_handlers.constants as cons
+from common.general_handlers.logger import Logger
 
 import os
 import sys

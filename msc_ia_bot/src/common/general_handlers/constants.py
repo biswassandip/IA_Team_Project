@@ -19,7 +19,7 @@ ROTATION_SIZE = 1000000
 # ------------------------------------------------------------
 INI_HEADER_SEARCH_IN_FILE_TYPES="SEARCH_IN_FILE_TYPES"
 KEY_INCLUDE="include"
-VALUE_INCLUDE=".txt', .doc, .docx, .xls, .xlsx, .xml, .pdf, .png, .zip, .html, .css"
+VALUE_INCLUDE=".txt, .doc, .docx, .xls, .xlsx, .xml, .pdf, .png, .zip, .html, .css"
 KEY_EXCLUDE="exclude"
 VALUE_EXCLUDE=".tmp, .bak, .jpg, .jpeg, .bmp, .gif, .exe"
 

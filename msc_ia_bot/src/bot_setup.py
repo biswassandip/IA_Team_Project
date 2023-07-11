@@ -15,8 +15,8 @@ The **User** is expected to review the ini file and update it as required before
 to start the process.
 """
 
-from common.utils import Utils
-from common.config import Config
+from common.general_handlers.utils import Utils
+from common.general_handlers.config import Config
 import configparser
 import common.fw_bot as fw_bot
 import sys

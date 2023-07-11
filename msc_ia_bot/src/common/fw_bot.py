@@ -5,9 +5,9 @@
 # --------------------------------------------------------------------
 import time
 from watchdog.observers import Observer
-from common.file_event_handler import FileMoveEventHandler
-from common.logger import Logger
-import common.constants as cons
+from common.file_handlers.file_event_handler import FileMoveEventHandler
+from common.general_handlers.logger import Logger
+import common.general_handlers.constants as cons
 
 def rules_exists(config):
     b_exists = True

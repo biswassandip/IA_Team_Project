@@ -8,9 +8,9 @@ import shutil
 import time
 import fnmatch
 from watchdog.events import FileSystemEventHandler
-from common.logger import Logger
-from common.utils import Utils
-import common.constants as cons
+from common.general_handlers.logger import Logger
+from common.general_handlers.utils import Utils
+import common.general_handlers.constants as cons
 
 class FileMoveEventHandler(FileSystemEventHandler):
 
