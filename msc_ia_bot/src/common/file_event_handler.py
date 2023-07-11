@@ -42,8 +42,8 @@ class FileMoveEventHandler(FileSystemEventHandler):
         if not event.is_directory:
 
             current_timestamp = time.time()
-            if self.last_processed_timestamp and abs(current_timestamp - self.last_processed_timestamp) < 1:
-                return  # skip redundant event        
+            # if self.last_processed_timestamp and abs(current_timestamp - self.last_processed_timestamp) < 1:
+            #     return  # skip redundant event        
 
             file_path = event.src_path
             file_name = os.path.basename(file_path)
@@ -51,7 +51,7 @@ class FileMoveEventHandler(FileSystemEventHandler):
             self.process_files(file_path,file_name)
             
             # update the last processed timestamp
-            self.last_processed_timestamp = current_timestamp
+            # self.last_processed_timestamp = current_timestamp
 
     # ====================================================================
     # process all files in the existing source_dir when executed for the first time

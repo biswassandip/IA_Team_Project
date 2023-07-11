@@ -20,6 +20,9 @@ def rules_exists(config):
     return b_exists
 
 def monitor_files(config):
+
+    _config =  config
+
     # create the event handler
     condition_map = {}
     
@@ -37,8 +40,6 @@ def monitor_files(config):
         # populate the condition_map
         condition_map[criteria.strip()] = (search_word.strip(), file_type.strip(), sftp_host.strip(), sftp_port.strip(), destination_dir.strip())
 
-
-    try:
         # prepare for file move
         event_handler =  FileMoveEventHandler(config,condition_map)
 
@@ -54,22 +55,24 @@ def monitor_files(config):
 
         logger.info(f"Monitoring directory '{source_dir}'...")
 
-        while True:
-            time.sleep(1)
+        try:
 
-            # Check if the stop_flag is set to True in the config file
-            config.read(ini_file_path)
-            stop_flag = config.getboolean('FLAGS', 'stop_flag')
-            
-            if stop_flag:
-                logger.info("Stopping the file monitoring.")
-                print(f"The file monitoring process has been stopped")
-                break
+            while True:
+                time.sleep(10)
+
+                # Check if the stop_flag is set to True in the config file
+                config.read(ini_file_path)
+                stop_flag = config.getboolean('FLAGS', 'stop_flag')
+                
+                if stop_flag:
+                    logger.info("Stopping the file monitoring.")
+                    print(f"The file monitoring process has been stopped")
+                    break
         
-    except KeyboardInterrupt:
-        pass
+        except KeyboardInterrupt:
+            pass
+        finally:
+            print(f"process ended")
+            observer.stop()
 
-    observer.stop()
     observer.join()
-    
-    return True

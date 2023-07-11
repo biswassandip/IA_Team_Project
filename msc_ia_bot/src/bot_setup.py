@@ -153,9 +153,9 @@ def start_process():
         fw_bot.monitor_files(config)
 
         try:
-            process = subprocess.Popen(['nohup', 'python', './common/monitor_files.py', '&'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
-
-            print(f"testing....")
+            #process = subprocess.Popen(['nohup', 'python', './common/monitor_files.py', '&'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
+            process = subprocess.Popen(['nohup', 'python', './common/monitor_files.py', '&'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+            print("Started subprocess with PID:", process.pid)
         except:
             error_message = str(sys.exc_info()[1])
             Utils.error_message(error_message, True)
