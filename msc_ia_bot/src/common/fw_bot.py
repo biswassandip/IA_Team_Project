@@ -21,8 +21,6 @@ def rules_exists(config):
 
 def monitor_files(config):
 
-    _config =  config
-
     # create the event handler
     condition_map = {}
     
@@ -40,39 +38,42 @@ def monitor_files(config):
         # populate the condition_map
         condition_map[criteria.strip()] = (search_word.strip(), file_type.strip(), sftp_host.strip(), sftp_port.strip(), destination_dir.strip())
 
-        # prepare for file move
-        event_handler =  FileMoveEventHandler(config,condition_map)
+    # prepare for file move
+    event_handler =  FileMoveEventHandler(config,condition_map)
 
-        # start monitoring the source directory for file creation
-        observer = Observer()
-        source_dir = config.get('GENERAL', 'source_dir')
-        observer.schedule(event_handler, source_dir, recursive=False)
-        observer.start()
+    # start monitoring the source directory for file creation
+    observer = Observer()
+    source_dir = config.get('GENERAL', 'source_dir')
+    observer.schedule(event_handler, source_dir, recursive=False)
+    observer.start()
 
-        # create the logger
-        ini_file_path = config.get('GENERAL', 'ini_file_path')
-        logger = Logger(ini_file_path)
+    # create the logger
+    ini_file_path = config.get('GENERAL', 'ini_file_path')
+    logger = Logger(ini_file_path)
 
-        logger.info(f"Monitoring directory '{source_dir}'...")
+    logger.info(f"Monitoring directory '{source_dir}'...")
 
-        try:
+    try:
 
-            while True:
-                time.sleep(10)
+        # Check if the stop_flag is set to True in the config file
+        config.read(ini_file_path)
+        stop_flag = config.getboolean('FLAGS', 'stop_flag')
 
-                # Check if the stop_flag is set to True in the config file
-                config.read(ini_file_path)
-                stop_flag = config.getboolean('FLAGS', 'stop_flag')
-                
-                if stop_flag:
-                    logger.info("Stopping the file monitoring.")
-                    print(f"The file monitoring process has been stopped")
-                    break
-        
-        except KeyboardInterrupt:
-            pass
-        finally:
-            print(f"process ended")
-            observer.stop()
+        while (not stop_flag):
+            time.sleep(2)
 
+            # Check if the stop_flag is set to True in the config file
+            config.read(ini_file_path)
+            stop_flag = config.getboolean('FLAGS', 'stop_flag')
+            
+            if stop_flag:
+                logger.info("Stopping the file monitoring.")
+                print(f"The file monitoring process has been stopped")
+                break
+    
+        observer.stop()
+    except KeyboardInterrupt:
+        observer.stop()
+            
     observer.join()
+    return True

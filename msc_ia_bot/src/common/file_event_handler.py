@@ -112,8 +112,8 @@ class FileMoveEventHandler(FileSystemEventHandler):
                 break
 
         # through the criteria if no match is found
-        if (not b_matched):
-            self.logger.warning(f"File '{file_path}' does not match any conditions.")
+        # if (not b_matched):
+        #     self.logger.warning(f"File '{file_path}' does not match any conditions.")
 
     # ====================================================================
     # search a word in the file

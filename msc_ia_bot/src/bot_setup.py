@@ -19,7 +19,6 @@ from common.utils import Utils
 from common.config import Config
 import configparser
 import common.fw_bot as fw_bot
-import subprocess
 import sys
 
 def display_setup_menu():
@@ -150,12 +149,9 @@ def start_process():
         config_file = config_file_path
         config = configparser.ConfigParser()
         config.read(config_file)
-        fw_bot.monitor_files(config)
 
         try:
-            #process = subprocess.Popen(['nohup', 'python', './common/monitor_files.py', '&'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL)
-            process = subprocess.Popen(['nohup', 'python', './common/monitor_files.py', '&'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
-            print("Started subprocess with PID:", process.pid)
+            b_setup=fw_bot.monitor_files(config)
         except:
             error_message = str(sys.exc_info()[1])
             Utils.error_message(error_message, True)
