@@ -110,6 +110,42 @@ def bot_config_setup():
 
     return b_setup
 
+def process(b_start, config_file_path, sleep_time=5):
+
+    b_setup = False
+
+    try:
+        # read the existing config file
+        config = configparser.ConfigParser()
+        config.read(config_file_path)
+
+
+        # update the value of the stop_flag option
+        if b_start:
+            config.set('FLAGS', 'stop_flag', 'False')
+        else:
+            config.set('FLAGS', 'stop_flag', 'True')
+
+        # Write the updated config file
+        with open(config_file_path, 'w') as config_file:
+            config.write(config_file)
+        config_file = config_file_path
+        config = configparser.ConfigParser()
+        config.read(config_file)
+
+        # if the process has to be started then start the monitoring
+        if b_start:
+            b_setup=fw_bot.monitor_files(config,sleep_time)
+        else:
+            b_setup=True
+    except:
+        error_message = str(sys.exc_info()[1])
+        Utils.error_message(error_message, True)
+        b_setup =  False
+
+    return b_setup
+
+
 def start_process():
     """
     **Method:** start_process
@@ -134,28 +170,7 @@ def start_process():
 
     # now create the required config
     if b_setup:
-        # read the existing config file
-        config = configparser.ConfigParser()
-        config.read(config_file_path)
-
-        # update the value of the stop_flag option
-        config.set('FLAGS', 'stop_flag', 'False')
-
-        # Write the updated config file
-        with open(config_file_path, 'w') as config_file:
-            config.write(config_file)
-
-
-        config_file = config_file_path
-        config = configparser.ConfigParser()
-        config.read(config_file)
-
-        try:
-            b_setup=fw_bot.monitor_files(config)
-        except:
-            error_message = str(sys.exc_info()[1])
-            Utils.error_message(error_message, True)
-            b_setup =  False
+        process(True,config_file_path)
 
     return b_setup
 
@@ -180,19 +195,9 @@ def stop_process():
             prompt="The bot.ini path provided in 3.1. is not valid!")
         b_setup = False
 
-    # now create the required config
+    # now stop the process
     if b_setup:
-
-        # read the existing config file
-        config = configparser.ConfigParser()
-        config.read(config_file_path)
-
-        # update the value of the stop_flag option
-        config.set('FLAGS', 'stop_flag', 'True')
-
-        # Write the updated config file
-        with open(config_file_path, 'w') as config_file:
-            config.write(config_file)
+        process(False,config_file_path)
 
     return b_setup
 
@@ -223,5 +228,5 @@ def run():
             print(f"The program was exited by user!")
             break
 
-# run the process
-run()
+if __name__ == '__main__':
+    run()

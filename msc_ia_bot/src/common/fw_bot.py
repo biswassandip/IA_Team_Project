@@ -19,8 +19,7 @@ def rules_exists(config):
     
     return b_exists
 
-def monitor_files(config):
-
+def monitor_files(config, sleep_time):
     # create the event handler
     condition_map = {}
     
@@ -59,17 +58,18 @@ def monitor_files(config):
         config.read(ini_file_path)
         stop_flag = config.getboolean(cons.INI_HEADER_FLAGS, cons.KEY_STOP_FLAG)
 
-        while (not stop_flag):
-            time.sleep(2)
+        if sleep_time>0:
+            while (not stop_flag):
+                time.sleep(sleep_time)
 
-            # Check if the stop_flag is set to True in the config file
-            config.read(ini_file_path)
-            stop_flag = config.getboolean(cons.INI_HEADER_FLAGS, cons.KEY_STOP_FLAG)
-            
-            if stop_flag:
-                logger.info("Stopping the file monitoring.")
-                print(f"The file monitoring process has been stopped")
-                break
+                # Check if the stop_flag is set to True in the config file
+                config.read(ini_file_path)
+                stop_flag = config.getboolean(cons.INI_HEADER_FLAGS, cons.KEY_STOP_FLAG)
+                
+                if stop_flag:
+                    logger.info("Stopping the file monitoring.")
+                    print(f"The file monitoring process has been stopped")
+                    break
     
         observer.stop()
     except KeyboardInterrupt:
