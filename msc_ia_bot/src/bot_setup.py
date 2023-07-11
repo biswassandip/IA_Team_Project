@@ -125,12 +125,12 @@ def start_process():
 
     # accept the data
     config_file_path = Utils.custom_input(
-        "3.1. Provide the bot.ini file path: ")
+        "2.1. Provide the bot.ini file path: ")
 
     # validate the inputs
     if not Utils.validate_dir_pattern(config_file_path):
         Utils.error_message(
-            prompt="The bot.ini path provided in 3.1. is not valid!")
+            prompt="The bot.ini path provided in 2.1. is not valid!")
         b_setup = False
 
     # now create the required config
@@ -176,12 +176,12 @@ def stop_process():
 
     # accept the data
     config_file_path = Utils.custom_input(
-        "4.1. Provide the bot.ini file path: ")
+        "3.1. Provide the bot.ini file path: ")
 
     # validate the inputs
     if not Utils.validate_dir_pattern(config_file_path):
         Utils.error_message(
-            prompt="The bot.ini path provided in 4.1. is not valid!")
+            prompt="The bot.ini path provided in 3.1. is not valid!")
         b_setup = False
 
     # now create the required config

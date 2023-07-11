@@ -7,7 +7,6 @@ import os
 import shutil
 import time
 import fnmatch
-from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from common.logger import Logger
 from common.utils import Utils
