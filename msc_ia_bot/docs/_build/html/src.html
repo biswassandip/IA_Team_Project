@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>src package &#8212; File Sorter BOT 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.common package" href="src.common.html" />
+    <link rel="prev" title="src" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="src-package">
+<h1>src package<a class="headerlink" href="#src-package" title="Permalink to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.common.html">src.common package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.common.file_handlers.html">src.common.file_handlers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers.file_event_handler">src.common.file_handlers.file_event_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers.search_in_files">src.common.file_handlers.search_in_files module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.common.general_handlers.html">src.common.general_handlers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.common.general_handlers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.general_handlers.html#module-src.common.general_handlers.config">src.common.general_handlers.config module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.general_handlers.html#module-src.common.general_handlers.constants">src.common.general_handlers.constants module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.general_handlers.html#module-src.common.general_handlers.logger">src.common.general_handlers.logger module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.general_handlers.html#module-src.common.general_handlers.utils">src.common.general_handlers.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.general_handlers.html#module-src.common.general_handlers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common.fw_bot">src.common.fw_bot module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.common.html#src.common.fw_bot.monitor_files"><code class="docutils literal notranslate"><span class="pre">monitor_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.common.html#src.common.fw_bot.rules_exists"><code class="docutils literal notranslate"><span class="pre">rules_exists()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-src.bot_setup">
+<span id="src-bot-setup-module"></span><h2>src.bot_setup module<a class="headerlink" href="#module-src.bot_setup" title="Permalink to this heading">¶</a></h2>
+<p><strong>Module:</strong> bot_setup.py</p>
+<p>This module is the start module that has the responsibilities to fulfill the setup of the bot.</p>
+<p>It provides the user with a menu that has options to choose from:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Setup requirements to create an ini file that the bot will use.</p></li>
+<li><p>Start the bot.</p></li>
+<li><p>Stop the bot.</p></li>
+<li><p>Quit the setup.</p></li>
+</ul>
+</div></blockquote>
+<p>Based on the chosen options, this module will decide on creating the required ini file (<strong>bot_config.ini</strong>).
+The <strong>User</strong> is expected to review the ini file and update it as required before rerunning the bot_setup.py
+to start the process.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.bot_config_setup">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">bot_config_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#bot_config_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.bot_config_setup" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Method:</strong> bot_config_setup</p>
+<p>This method will trigger the creation of the actual config ini file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.display_setup_menu">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">display_setup_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#display_setup_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.display_setup_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Method:</strong> display_setup_menu</p>
+<p>This method is responsible to display the menu options.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.process_menu">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">process_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#process_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.process_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Method:</strong> process_menu</p>
+<p>This method is responsible to process the functionality behind the chosen option from the menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>option</strong> (<em>int</em>) – This is the expected option between 1 to 4.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Responses with a boolean (True or False) after the functionality for an option is executed</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.run">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.run" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Method:</strong> run</p>
+<p>This method is the main method that will execute the bot setup process.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.start_process">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">start_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#start_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.start_process" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Method:</strong> start_process</p>
+<p>This method will start the file monitoring process by updating the stop_flag to False in the ini file
+and triggering the fw_bot.monitor_files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.stop_process">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">stop_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#stop_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.stop_process" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Method:</strong> stop_process</p>
+<p>This method will stop the file monitoring process by updating the stop_flag to True in the ini file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-src">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">File Sorter BOT</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">src package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">src</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">src</a></li>
+      <li>Next: <a href="src.common.html" title="next chapter">src.common package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Group 3.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/src.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
