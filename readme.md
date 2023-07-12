@@ -10,8 +10,8 @@
 ![Static Badge](https://img.shields.io/badge/test_case-pytest-yellow)
 ![Static Badge](https://img.shields.io/badge/metrics-radon-yellow)
 
-The BOT is responsible to Monitor, Retrieve and Process as Source Directory based on a Configuration ini file as the input.
-This input is a required to define on the keywords and/or file-type to search on and move the files to respective directories so that they can be given for further analysis.
+The BOT is responsible to Monitor, Retrieve and Process the Source Directory based on a Configuration ini file as the input.
+This input is required with proper definitions about the keywords and/or file-types so that the data can be used to move the files to respective directories so that they can be given for further analysis.
 
 ## Executable
 
