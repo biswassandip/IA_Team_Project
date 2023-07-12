@@ -11,14 +11,3 @@ based on a configuration.
 ![Static Badge](https://img.shields.io/badge/dependencies-up_to_date-green)
 ![Static Badge](https://img.shields.io/badge/dist-download-pink)
 ![Static Badge](https://img.shields.io/badge/release-v1.0.0-purple)
-
-```flow
-st=>start: Login
-op=>operation: Login operation
-cond=>condition: Successful Yes or No?
-e=>end: To admin
-
-st->op->cond
-cond(yes)->e
-cond(no)->op
-```
