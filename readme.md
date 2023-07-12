@@ -1,3 +1,5 @@
+![](images/fw_bot_bck.jpeg)
+
 <h1><center><u>Find, Identify, Monitor and Move Sorter</u></center></h1>
 <h2><center>A BOT to do this.</center></h2>
 <section>
