@@ -19,7 +19,7 @@ An executable "bot_setup" is provided that is bundled with all dependencies for 
 
 ## Installation
 
-A minimum Python 3.10 version will be required. The project uses Python 3.10.11 and pip 23.1.2. it is recommended to install to a virtual environment. A summary of the installation steps would be:
+A minimum Python 3.10 version will be required. The project uses Python 3.10.11 and pip 23.1.2. It is recommended to install to a virtual environment. A summary of the installation steps would be:
 
 - Download or clone.
 - Create a virtual environment.
@@ -39,30 +39,6 @@ pip install -r requirements.txt
 
 - Now start the program by executing bot_setup.py in the "src" directory.
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+## Process flow with main python programs
 
-```bash
-pip install foobar
-```
-
-## Usage
-
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+![](images/process_flow.png)
