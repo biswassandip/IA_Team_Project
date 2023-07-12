@@ -47,20 +47,6 @@
 <span class="sd">    * sftp_port - this is the port number. **Mandatory** only if the file needs to be SFTP&#39;ed.</span>
 <span class="sd">    * destination_dir - path where the file needs to be moved. This is **MANDATORY**</span>
 
-<span class="sd">Some examples are given below:</span>
-<span class="sd">    * Example; criteria1: business, *.doc, 22.22.22.22, 456, /remote/sftp/path/dir1</span>
-<span class="sd">    In this case, if the word &quot;business&quot; is found in the file then it will be sftp&#39;ed to the given directory.</span>
-
-<span class="sd">    * Example; criteria1: business, , 22.22.22.22, 456, /remote/sftp/path/dir2</span>
-<span class="sd">    In this case, if the word &quot;business&quot; is found in the any file then it will be sftp&#39;ed to the given directory.</span>
-
-<span class="sd">    * Example; criteria1: ,*.doc , 22.22.22.22, 456, /remote/sftp/path/dir3</span>
-<span class="sd">    In this case, if the file type of *.doc then it will be sftp&#39;ed to the given directory.</span>
-
-<span class="sd">    * Example; criteria1: business ,*.doc , , , /local/dir1</span>
-<span class="sd">    In this case, if the word &quot;business&quot; is found in the file then it will be moved to the given directory.</span>
-
-<span class="sd">and so on....</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
@@ -111,19 +97,12 @@
 
 
 <div class="viewcode-block" id="Config.create_config"><a class="viewcode-back" href="../../../../src.common.general_handlers.html#src.common.general_handlers.config.Config.create_config">[docs]</a>    <span class="k">def</span> <span class="nf">create_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        **Method:** create_config</span>
 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method will create the actual config file with required configurations for:</span>
 
-<span class="sd">        * [GENERAL] - consists of  general settings like ini file path, source directory, etc.</span>
-<span class="sd">        * [SEARCH_IN_FILE_TYPES] - consists of filter types that will be included and excluded in word search.</span>
-<span class="sd">        * [BOT_RULES] - consists of the various combinations for the rules criteria</span>
-<span class="sd">        * [SFTP_KEYS] - provides with the private key path</span>
-<span class="sd">        * [PROCESSES] -  settings for number of processes to be run</span>
-<span class="sd">        * [FLAGS] - settings to stop the process (=True)</span>
-<span class="sd">        </span>
-<span class="sd">        :return: boolean</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">b_config</span> <span class="o">=</span> <span class="kc">True</span>
@@ -142,17 +121,14 @@
             <span class="c1"># create the search file types for include and exclude</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_HEADER_SEARCH_IN_FILE_TYPES</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">cons</span><span class="o">.</span><span class="n">KEY_INCLUDE</span><span class="p">:</span> <span class="n">cons</span><span class="o">.</span><span class="n">VALUE_INCLUDE</span><span class="p">,</span>
-                <span class="n">cons</span><span class="o">.</span><span class="n">KEY_EXCLUDE</span><span class="p">:</span> <span class="n">cons</span><span class="o">.</span><span class="n">VALUE_EXCLUDE</span><span class="p">,</span>
             <span class="p">}</span>
 
             <span class="c1"># create the search config</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cp_obj</span><span class="p">[</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_HEADER_BOT_RULES</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;criteria1&quot;</span><span class="p">:</span> <span class="s2">&quot;search_word, file_type, sftp_host, sftp_port, destination_dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;criteria2&quot;</span><span class="p">:</span> <span class="s2">&quot;search_word, , sftp_host, sftp_port, destination_dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;criteria3&quot;</span><span class="p">:</span> <span class="s2">&quot;, file_type, sftp_host, sftp_port, destination_dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;criteria4&quot;</span><span class="p">:</span> <span class="s2">&quot;search_word, file_type, , , destination_dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;criteria5&quot;</span><span class="p">:</span> <span class="s2">&quot;search_word, , , , destination_dir&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;criteria6&quot;</span><span class="p">:</span> <span class="s2">&quot;, file_type, , , destination_dir&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;criteria1 = sample, .pdf, , , path/to/destination&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;criteria2 = sample, .txt, , , path/to/destination&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;criteria3 = sample, .xlsx, , , path/to/destination&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;criteria4 = sample, .docx, , , path/to/destination&quot;</span><span class="p">,</span>
             <span class="p">}</span>
 
             <span class="c1"># create the keys config</span>
@@ -203,16 +179,16 @@
         <span class="k">return</span> <span class="n">b_config</span></div>
 
 <div class="viewcode-block" id="Config.generate_ssh_key"><a class="viewcode-back" href="../../../../src.common.general_handlers.html#src.common.general_handlers.config.Config.generate_ssh_key">[docs]</a>    <span class="k">def</span> <span class="nf">generate_ssh_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        **Method:** generate_ssh_key</span>
 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This method generates the private and public key files.</span>
 <span class="sd">        Please note that the private key file should not be shared with anyone and kept in a safe place.</span>
 <span class="sd">        Update the private key file path in the bot_config.ini file so that it can be used to SFTP.</span>
 
 <span class="sd">        To enable smooth SFTP, the public key must be shared with the SFTP server admin so that it can added to the server config.</span>
 
-<span class="sd">        :return: boolean</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">b_generate</span> <span class="o">=</span> <span class="kc">True</span>

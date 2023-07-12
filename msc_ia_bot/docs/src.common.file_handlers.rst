@@ -12,10 +12,10 @@ src.common.file\_handlers.file\_event\_handler module
    :undoc-members:
    :show-inheritance:
 
-src.common.file\_handlers.search\_in\_files module
+src.common.file\_handlers.keyword\_in\_file module
 --------------------------------------------------
 
-.. automodule:: src.common.file_handlers.search_in_files
+.. automodule:: src.common.file_handlers.keyword_in_file
    :members:
    :undoc-members:
    :show-inheritance:

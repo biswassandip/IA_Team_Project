@@ -53,26 +53,6 @@ The criteria can be provided as comma separated rules for example:</p>
 <li><p>destination_dir - path where the file needs to be moved. This is <strong>MANDATORY</strong></p></li>
 </ul>
 </div></blockquote>
-<dl>
-<dt>Some examples are given below:</dt><dd><ul class="simple">
-<li><p>Example; criteria1: business, <a href="#id1"><span class="problematic" id="id2">*</span></a>.doc, 22.22.22.22, 456, /remote/sftp/path/dir1</p></li>
-</ul>
-<p>In this case, if the word “business” is found in the file then it will be sftp’ed to the given directory.</p>
-<ul class="simple">
-<li><p>Example; criteria1: business, , 22.22.22.22, 456, /remote/sftp/path/dir2</p></li>
-</ul>
-<p>In this case, if the word “business” is found in the any file then it will be sftp’ed to the given directory.</p>
-<ul class="simple">
-<li><p>Example; criteria1: ,*.doc , 22.22.22.22, 456, /remote/sftp/path/dir3</p></li>
-</ul>
-<p>In this case, if the file type of <a href="#id3"><span class="problematic" id="id4">*</span></a>.doc then it will be sftp’ed to the given directory.</p>
-<ul class="simple">
-<li><p>Example; criteria1: business ,*.doc , , , /local/dir1</p></li>
-</ul>
-<p>In this case, if the word “business” is found in the file then it will be moved to the given directory.</p>
-</dd>
-</dl>
-<p>and so on….</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.common.general_handlers.config.Config">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.general_handlers.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ini_file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./IA_BOT/bot.ini'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.config.Config" title="Permalink to this definition">¶</a></dt>
@@ -95,16 +75,7 @@ will be processed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.config.Config.create_config">
 <span class="sig-name descname"><span class="pre">create_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/config.html#Config.create_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.config.Config.create_config" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> create_config</p>
-<p>This method will create the actual config file with required configurations for:</p>
-<ul class="simple">
-<li><p>[GENERAL] - consists of  general settings like ini file path, source directory, etc.</p></li>
-<li><p>[SEARCH_IN_FILE_TYPES] - consists of filter types that will be included and excluded in word search.</p></li>
-<li><p>[BOT_RULES] - consists of the various combinations for the rules criteria</p></li>
-<li><p>[SFTP_KEYS] - provides with the private key path</p></li>
-<li><p>[PROCESSES] -  settings for number of processes to be run</p></li>
-<li><p>[FLAGS] - settings to stop the process (=True)</p></li>
-</ul>
+<dd><p>This method will create the actual config file with required configurations for:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>boolean</p>
@@ -115,8 +86,7 @@ will be processed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.config.Config.generate_ssh_key">
 <span class="sig-name descname"><span class="pre">generate_ssh_key</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/config.html#Config.generate_ssh_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.config.Config.generate_ssh_key" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> generate_ssh_key</p>
-<p>This method generates the private and public key files.
+<dd><p>This method generates the private and public key files.
 Please note that the private key file should not be shared with anyone and kept in a safe place.
 Update the private key file path in the bot_config.ini file so that it can be used to SFTP.</p>
 <p>To enable smooth SFTP, the public key must be shared with the SFTP server admin so that it can added to the server config.</p>
@@ -132,6 +102,7 @@ Update the private key file path in the bot_config.ini file so that it can be us
 </section>
 <section id="module-src.common.general_handlers.constants">
 <span id="src-common-general-handlers-constants-module"></span><h2>src.common.general_handlers.constants module<a class="headerlink" href="#module-src.common.general_handlers.constants" title="Permalink to this heading">¶</a></h2>
+<p>This is a constants module that is used for various functionalities within the program.</p>
 </section>
 <section id="module-src.common.general_handlers.logger">
 <span id="src-common-general-handlers-logger-module"></span><h2>src.common.general_handlers.logger module<a class="headerlink" href="#module-src.common.general_handlers.logger" title="Permalink to this heading">¶</a></h2>
@@ -142,22 +113,41 @@ Update the private key file path in the bot_config.ini file so that it can be us
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.logger.Logger.error">
 <span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/logger.html#Logger.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.logger.Logger.error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Logs error descriptions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The description</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.logger.Logger.info">
 <span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/logger.html#Logger.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.logger.Logger.info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Logs information descriptions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The description</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.logger.Logger.init_logger">
 <span class="sig-name descname"><span class="pre">init_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/logger.html#Logger.init_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.logger.Logger.init_logger" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Initializes the actual logging rotation and formatting values</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.logger.Logger.warning">
 <span class="sig-name descname"><span class="pre">warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/logger.html#Logger.warning"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.logger.Logger.warning" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Logs warning descriptions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The description</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -171,47 +161,99 @@ Update the private key file path in the bot_config.ini file so that it can be us
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.create_dir">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.create_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.create_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function creates the directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – Directory path.</p></li>
+<li><p><strong>is_file</strong> (<em>boolean</em>) – Default False. Tells the function whether the path is a file or not.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.custom_input">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">custom_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.custom_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.custom_input" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function is used to provide with a custom input for a customer in a different color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>str</em>) – The message text.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.custom_print">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">custom_print</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plus_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.custom_print"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.custom_print" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function is used to print general messages for a customer in a different color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>str</em>) – The message text.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.error_message">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">error_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plus_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.error_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.error_message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function is used to print error messages for a customer in a different color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>str</em>) – The message text.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.full_path">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">full_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.full_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.full_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function returns the full path for a given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Absolute Path (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.get_file_name">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_file_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.get_file_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.get_file_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the file name part from the file path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – The path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Filename (str)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.information">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">information</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">newline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plus_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.information" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function is used to print information messages for a customer in a different color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>str</em>) – The message text.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.validate_dir_pattern">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_dir_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.validate_dir_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.validate_dir_pattern" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.validate_ip_pattern">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_ip_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.validate_ip_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.validate_ip_pattern" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.general_handlers.utils.Utils.validate_port_pattern">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_port_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/general_handlers/utils.html#Utils.validate_port_pattern"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.general_handlers.utils.Utils.validate_port_pattern" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This is a function validates the directory pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Directory path.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

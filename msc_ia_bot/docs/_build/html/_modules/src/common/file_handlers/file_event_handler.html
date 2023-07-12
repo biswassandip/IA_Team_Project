@@ -29,29 +29,40 @@
           <div class="body" role="main">
             
   <h1>Source code for src.common.file_handlers.file_event_handler</h1><div class="highlight"><pre>
-<span></span><span class="c1"># --------------------------------------------------------------------</span>
-<span class="c1"># file name: fw_bot.py</span>
-<span class="c1"># description: this class actually monitors and moves files based on</span>
-<span class="c1"># the config file</span>
-<span class="c1"># --------------------------------------------------------------------</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">fnmatch</span>
 <span class="kn">from</span> <span class="nn">watchdog.events</span> <span class="kn">import</span> <span class="n">FileSystemEventHandler</span>
 <span class="kn">from</span> <span class="nn">common.general_handlers.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
 <span class="kn">from</span> <span class="nn">common.general_handlers.utils</span> <span class="kn">import</span> <span class="n">Utils</span>
 <span class="kn">import</span> <span class="nn">common.general_handlers.constants</span> <span class="k">as</span> <span class="nn">cons</span>
+<span class="kn">from</span> <span class="nn">src.common.file_handlers.keyword_in_file</span> <span class="kn">import</span> <span class="n">KeywordInFile</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">**class: FileMoveEventHandler**</span>
+
+<span class="sd">This class is responsible to perform the actual processing of the files as defined within the bot config file.</span>
+<span class="sd">It gets all the files from the source directory and performs processing as per the bot rules.</span>
+<span class="sd">This class also raises an even when a new file is created within the source dir.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
 
 <div class="viewcode-block" id="FileMoveEventHandler"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler">[docs]</a><span class="k">class</span> <span class="nc">FileMoveEventHandler</span><span class="p">(</span><span class="n">FileSystemEventHandler</span><span class="p">):</span>
 
-    <span class="c1"># ====================================================================</span>
-    <span class="c1"># initialize the config</span>
-    <span class="c1"># ====================================================================</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">condition_map</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is used to trigger the processing when</span>
+<span class="sd">    1. The program is run for initially by processing on the files within the directory.</span>
+<span class="sd">    2. The event triggered when a file is created.</span>
+
+<span class="sd">    init args:</span>
+<span class="sd">        config (object): The config ini file.</span>
+<span class="sd">        condition_map: The conditions that needs to be applied.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_HEADER_GENERAL</span><span class="p">,</span> <span class="n">cons</span><span class="o">.</span><span class="n">KEY_INI_FILE_PATH</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span> <span class="o">=</span> <span class="n">condition_map</span>
 
         <span class="c1"># create the logger</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">config_file_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ini_file_path</span><span class="p">)</span>
@@ -62,107 +73,193 @@
         <span class="c1"># to handle redundant file events</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_processed_timestamp</span> <span class="o">=</span> <span class="kc">None</span> 
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">process_existing_files</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_condition_map</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">common_file_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ext</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_HEADER_SEARCH_IN_FILE_TYPES</span><span class="p">][</span><span class="n">cons</span><span class="o">.</span><span class="n">KEY_INCLUDE</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)]</span>
 
-    <span class="c1"># ====================================================================</span>
-    <span class="c1"># when a file is created event</span>
-    <span class="c1"># ====================================================================</span>
+
+    <span class="k">def</span> <span class="nf">_rules_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function checks whether there are rules defined or not</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="n">b_exists</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_HEADER_BOT_RULES</span><span class="p">,</span> <span class="s2">&quot;criteria1&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">b_exists</span><span class="o">=</span><span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="n">b_exists</span>
+
+
+    <span class="k">def</span> <span class="nf">_get_condition_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function creates the condition map based on the bot rules within the config file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            condition_map (list): It is a list of all the rule items</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bot_rules_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rules_exists</span><span class="p">():</span>
+            
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">cons</span><span class="o">.</span><span class="n">INI_HEADER_BOT_RULES</span><span class="p">):</span>
+                
+                <span class="c1"># the * operator is used to assign multiple values from the result of value.split(&#39;,&#39;) to the variables key and value.</span>
+                <span class="n">criteria</span><span class="p">,</span> <span class="n">search_word</span><span class="p">,</span> <span class="n">file_type</span><span class="p">,</span> <span class="n">sftp_host</span><span class="p">,</span> <span class="n">sftp_port</span><span class="p">,</span> <span class="n">destination_dir</span> <span class="o">=</span> <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+
+                <span class="c1"># populate the condition_map</span>
+                <span class="n">bot_rules_map</span><span class="p">[</span><span class="n">criteria</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="p">(</span><span class="n">search_word</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">file_type</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">sftp_host</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">sftp_port</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">destination_dir</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">bot_rules_map</span>
+
+
 <div class="viewcode-block" id="FileMoveEventHandler.on_created"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.on_created">[docs]</a>    <span class="k">def</span> <span class="nf">on_created</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function will be triggered when a file is created.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event: This is created whenever a file is created</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">is_directory</span><span class="p">:</span>
 
-            <span class="n">current_timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="c1"># if self.last_processed_timestamp and abs(current_timestamp - self.last_processed_timestamp) &lt; 1:</span>
-            <span class="c1">#     return  # skip redundant event        </span>
-
             <span class="n">file_path</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">src_path</span>
-            <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_files</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span></div>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">process_files</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="n">file_name</span><span class="p">)</span></div>
-            
-            <span class="c1"># update the last processed timestamp</span>
-            <span class="c1"># self.last_processed_timestamp = current_timestamp</span>
 
-    <span class="c1"># ====================================================================</span>
-    <span class="c1"># process all files in the existing source_dir when executed for the first time</span>
-    <span class="c1"># ====================================================================</span>
 <div class="viewcode-block" id="FileMoveEventHandler.process_existing_files"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_existing_files">[docs]</a>    <span class="k">def</span> <span class="nf">process_existing_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_dir</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">process_files</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="n">file_name</span><span class="p">)</span></div>
 
-    <span class="c1"># ====================================================================</span>
-    <span class="c1"># common rule for processing the file</span>
-    <span class="c1"># ====================================================================</span>
-<div class="viewcode-block" id="FileMoveEventHandler.process_files"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_files">[docs]</a>    <span class="k">def</span> <span class="nf">process_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">):</span>
-        <span class="n">b_matched</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function will process on all the files within a directory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">for</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">condition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">b_return</span> <span class="o">=</span> <span class="kc">True</span>
 
-            <span class="c1"># get the respective criteria values</span>
-            <span class="n">search_word</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">file_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">sftp_host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
-            <span class="n">sftp_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
-            <span class="n">destination_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_dir</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process_files</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">b_return</span> <span class="o">=</span> <span class="kc">False</span>
 
-            <span class="c1"># booleans for respective operations</span>
-            <span class="n">b_search_on_file_type</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">b_search_on_any_file</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">b_file_type_only</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">b_return</span></div>
+        
 
-            <span class="c1"># if no destination directory is provided then skip</span>
-            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">destination_dir</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No destination provided for criteria &#39;</span><span class="si">{</span><span class="n">criteria</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                <span class="n">b_matched</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">break</span>
+<div class="viewcode-block" id="FileMoveEventHandler.process_files"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_files">[docs]</a>    <span class="k">def</span> <span class="nf">process_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
 
-            <span class="c1"># when search_word is provide and file_type is provided</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">search_word</span> <span class="ow">and</span> <span class="n">file_type</span><span class="p">):</span>
-                <span class="c1"># if the file create matches with the file_type</span>
-                <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
-                    <span class="n">b_search_on_file_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_word_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search_word</span><span class="p">)</span>
-            
-            <span class="c1"># when search_word is provide and file_type is NOT provided</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">search_word</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_type</span><span class="p">):</span>
-                <span class="n">b_search_on_any_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_word_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search_word</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the main function that will process the file based on the condition map or bot rules.</span>
 
-            <span class="c1"># when search_word is provide and file_type is NOT provided</span>
-            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">search_word</span> <span class="ow">and</span> <span class="n">file_type</span><span class="p">):</span>
-                <span class="c1"># if the file create matches with the file_type</span>
-                <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
-                    <span class="n">b_file_type_only</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="p">(</span><span class="n">file_type</span><span class="o">==</span><span class="s2">&quot;*.*&quot;</span><span class="p">):</span>
-                    <span class="n">b_file_type_only</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="sd">        Args:</span>
+<span class="sd">            file_path (str): File path to be processed.</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">b_search_on_file_type</span> <span class="ow">or</span> <span class="n">b_search_on_any_file</span> <span class="ow">or</span> <span class="n">b_file_type_only</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">move_file_to_destination</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="n">file_name</span><span class="p">,</span><span class="n">destination_dir</span><span class="p">)</span>                    
-                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Moved file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; to &#39;</span><span class="si">{</span><span class="n">destination_dir</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-                <span class="n">b_matched</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">break</span></div>
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># through the criteria if no match is found</span>
-        <span class="c1"># if (not b_matched):</span>
-        <span class="c1">#     self.logger.warning(f&quot;File &#39;{file_path}&#39; does not match any conditions.&quot;)</span>
+        <span class="n">b_return</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">get_file_name</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 
-    <span class="c1"># ====================================================================</span>
-    <span class="c1"># search a word in the file</span>
-    <span class="c1"># ====================================================================</span>
-<div class="viewcode-block" id="FileMoveEventHandler.search_word_in_file"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.search_word_in_file">[docs]</a>    <span class="k">def</span> <span class="nf">search_word_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">search_word</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">search_word</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="k">try</span><span class="p">:</span>
 
-    <span class="c1"># ====================================================================</span>
-    <span class="c1"># move the file to destination</span>
-    <span class="c1"># ====================================================================</span>
-<div class="viewcode-block" id="FileMoveEventHandler.move_file_to_destination"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.move_file_to_destination">[docs]</a>    <span class="k">def</span> <span class="nf">move_file_to_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">):</span>
-        <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">)</span>
-        <span class="n">destination_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">)</span></div></div>
+            <span class="k">for</span> <span class="n">criteria</span><span class="p">,</span> <span class="n">condition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="c1"># get the respective criteria values</span>
+                <span class="n">search_word</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">file_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">sftp_host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">sftp_port</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+                <span class="n">destination_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">condition_map</span><span class="p">[</span><span class="n">criteria</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+
+                <span class="c1"># if no destination directory is provided then skip</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">destination_dir</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No destination provided for criteria &#39;</span><span class="si">{</span><span class="n">criteria</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                    <span class="n">b_return</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># when search_word is provide and file_type is provided</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">search_word</span> <span class="ow">and</span> <span class="n">file_type</span><span class="p">):</span>
+                    <span class="c1"># if the file create matches with the file_type</span>
+                    <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="o">+</span><span class="n">file_type</span><span class="p">):</span>
+                        <span class="n">b_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_word_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search_word</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_file_types</span><span class="p">)</span>
+                
+                <span class="c1"># when search_word is provide and file_type is NOT provided</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="n">search_word</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_type</span><span class="p">):</span>
+                    <span class="n">b_return</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_word_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search_word</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">common_file_types</span><span class="p">)</span>
+
+                <span class="c1"># when search_word is NOT provided and file_type is provided</span>
+                <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="n">search_word</span> <span class="ow">and</span> <span class="n">file_type</span><span class="p">):</span>
+                    <span class="c1"># if the file create matches with the file_type</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="o">+</span><span class="n">file_type</span><span class="p">)</span> <span class="ow">or</span> <span class="n">file_type</span><span class="o">==</span><span class="s2">&quot;*.*&quot;</span><span class="p">):</span>
+                        <span class="n">b_return</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">b_return</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">move_file_to_destination</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">)</span>                    
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Moved file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; to &#39;</span><span class="si">{</span><span class="n">destination_dir</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                    <span class="k">break</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">b_return</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">b_return</span></div>
+
+
+<div class="viewcode-block" id="FileMoveEventHandler.search_word_in_file"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.search_word_in_file">[docs]</a>    <span class="k">def</span> <span class="nf">search_word_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">common_file_types</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the function that triggers keyword searching within given file types.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path (str): File path to be processed.</span>
+<span class="sd">            keyword (str): keyword to find</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">keywordInFile</span> <span class="o">=</span> <span class="n">KeywordInFile</span><span class="p">()</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">keywordInFile</span><span class="o">.</span><span class="n">search_keyword_in_files</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">keyword</span><span class="p">,</span> <span class="n">common_file_types</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="FileMoveEventHandler.move_file_to_destination"><a class="viewcode-back" href="../../../../src.common.file_handlers.html#src.common.file_handlers.file_event_handler.FileMoveEventHandler.move_file_to_destination">[docs]</a>    <span class="k">def</span> <span class="nf">move_file_to_destination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">destination_dir</span><span class="p">):</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is the function moves the file based on the destination.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path (str): File path to be processed.</span>
+<span class="sd">            file_name (str): File name to be processed.</span>
+<span class="sd">            destination_dir(str): The destination directory.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">b_return</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="n">Utils</span><span class="o">.</span><span class="n">get_file_name</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Utils</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">)</span>
+            <span class="n">destination_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">b_return</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">b_return</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
           </div>

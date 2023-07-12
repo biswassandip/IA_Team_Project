@@ -40,20 +40,41 @@
 <span id="src-common-file-handlers-file-event-handler-module"></span><h2>src.common.file_handlers.file_event_handler module<a class="headerlink" href="#module-src.common.file_handlers.file_event_handler" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.common.file_handlers.file_event_handler.FileMoveEventHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.file_handlers.file_event_handler.</span></span><span class="sig-name descname"><span class="pre">FileMoveEventHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">condition_map</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.file_handlers.file_event_handler.</span></span><span class="sig-name descname"><span class="pre">FileMoveEventHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FileSystemEventHandler</span></code></p>
+<p>This class is used to trigger the processing when
+1. The program is run for initially by processing on the files within the directory.
+2. The event triggered when a file is created.</p>
+<dl class="simple">
+<dt>init args:</dt><dd><p>config (object): The config ini file.
+condition_map: The conditions that needs to be applied.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.file_handlers.file_event_handler.FileMoveEventHandler.move_file_to_destination">
-<span class="sig-name descname"><span class="pre">move_file_to_destination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.move_file_to_destination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.move_file_to_destination" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">move_file_to_destination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.move_file_to_destination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.move_file_to_destination" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the function moves the file based on the destination.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – File path to be processed.</p></li>
+<li><p><strong>file_name</strong> (<em>str</em>) – File name to be processed.</p></li>
+<li><p><strong>destination_dir</strong> (<em>str</em>) – The destination directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.file_handlers.file_event_handler.FileMoveEventHandler.on_created">
 <span class="sig-name descname"><span class="pre">on_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.on_created"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.on_created" title="Permalink to this definition">¶</a></dt>
-<dd><p>Called when a file or directory is created.</p>
+<dd><p>This function will be triggered when a file is created.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">DirCreatedEvent</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">FileCreatedEvent</span></code>) – Event representing file/directory creation.</p>
+<dd class="field-odd"><p><strong>event</strong> – This is created whenever a file is created</p>
 </dd>
 </dl>
 </dd></dl>
@@ -61,65 +82,52 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_existing_files">
 <span class="sig-name descname"><span class="pre">process_existing_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.process_existing_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_existing_files" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>This function will process on all the files within a directory.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_files">
-<span class="sig-name descname"><span class="pre">process_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.process_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_files" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">process_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.process_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.process_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the main function that will process the file based on the condition map or bot rules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – File path to be processed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.common.file_handlers.file_event_handler.FileMoveEventHandler.search_word_in_file">
-<span class="sig-name descname"><span class="pre">search_word_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.search_word_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.search_word_in_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">search_word_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_file_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/file_event_handler.html#FileMoveEventHandler.search_word_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.file_event_handler.FileMoveEventHandler.search_word_in_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the function that triggers keyword searching within given file types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – File path to be processed.</p></li>
+<li><p><strong>keyword</strong> (<em>str</em>) – keyword to find</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="module-src.common.file_handlers.search_in_files">
-<span id="src-common-file-handlers-search-in-files-module"></span><h2>src.common.file_handlers.search_in_files module<a class="headerlink" href="#module-src.common.file_handlers.search_in_files" title="Permalink to this heading">¶</a></h2>
+<section id="module-src.common.file_handlers.keyword_in_file">
+<span id="src-common-file-handlers-keyword-in-file-module"></span><h2>src.common.file_handlers.keyword_in_file module<a class="headerlink" href="#module-src.common.file_handlers.keyword_in_file" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.file_handlers.search_in_files.</span></span><span class="sig-name descname"><span class="pre">SearchInFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dir_or_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.common.file_handlers.keyword_in_file.</span></span><span class="sig-name descname"><span class="pre">KeywordInFile</span></span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.get_all_files">
-<span class="sig-name descname"><span class="pre">get_all_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.get_all_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.get_all_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a list of all files within a directory and its subdirectories.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>directory</strong> (<em>str</em>) – The directory path.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of file paths.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_files_with_keyword">
-<span class="sig-name descname"><span class="pre">search_files_with_keyword</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_files_with_keyword"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_files_with_keyword" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for files containing a keyword within a directory or a specific file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>A dictionary with ‘files’ and ‘errors’ keys. ‘files’ gives the list of file paths that has the keyword,</dt><dd><p>and ‘errors’ contains the list error messages with file paths.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_docx_file">
-<span class="sig-name descname"><span class="pre">search_keyword_in_docx_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_docx_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_docx_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_docx_file">
+<span class="sig-name descname"><span class="pre">search_keyword_in_docx_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_docx_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_docx_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within a DOCX file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -129,17 +137,17 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if the keyword is found, False otherwise.</p>
+<dd class="field-even"><p>A dictionary with ‘success’, ‘file’ and ‘error_message’ keys.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_excel_file">
-<span class="sig-name descname"><span class="pre">search_keyword_in_excel_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_excel_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_excel_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_excel_file">
+<span class="sig-name descname"><span class="pre">search_keyword_in_excel_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_excel_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_excel_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within an Excel file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -149,17 +157,17 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if the keyword is found, False otherwise.</p>
+<dd class="field-even"><p>A dictionary with ‘success’, ‘file’ and ‘error_message’ keys.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_files">
-<span class="sig-name descname"><span class="pre">search_keyword_in_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_file_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_file_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_files">
+<span class="sig-name descname"><span class="pre">search_keyword_in_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_file_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within a list of files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -171,17 +179,21 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of file paths that contain the keyword.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A dictionary with ‘files’ and ‘errors’ keys. ‘files’ gives the list of file paths that has the keyword,</dt><dd><p>and ‘errors’ contains the list error messages with file paths.</p>
+</dd>
+</dl>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_pdf_file">
-<span class="sig-name descname"><span class="pre">search_keyword_in_pdf_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_pdf_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_pdf_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_pdf_file">
+<span class="sig-name descname"><span class="pre">search_keyword_in_pdf_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_pdf_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_pdf_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within a PDF file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -191,17 +203,17 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if the keyword is found, False otherwise.</p>
+<dd class="field-even"><p>A dictionary with ‘success’, ‘file’ and ‘error_message’ keys.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_text_file">
-<span class="sig-name descname"><span class="pre">search_keyword_in_text_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_text_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_text_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_text_file">
+<span class="sig-name descname"><span class="pre">search_keyword_in_text_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_text_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_text_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within a text file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -211,17 +223,17 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if the keyword is found, False otherwise.</p>
+<dd class="field-even"><p>A dictionary with ‘success’, ‘file’ and ‘error_message’ keys.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_xml_file">
-<span class="sig-name descname"><span class="pre">search_keyword_in_xml_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_xml_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_xml_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_xml_file">
+<span class="sig-name descname"><span class="pre">search_keyword_in_xml_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_xml_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_xml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within an XML file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -231,32 +243,30 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if the keyword is found, False otherwise.</p>
+<dd class="field-even"><p>A dictionary with ‘success’, ‘file’ and ‘error_message’ keys.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_zip_file">
-<span class="sig-name descname"><span class="pre">search_keyword_in_zip_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">common_file_types</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_file_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/search_in_files.html#SearchInFiles.search_keyword_in_zip_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.search_in_files.SearchInFiles.search_keyword_in_zip_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_zip_file">
+<span class="sig-name descname"><span class="pre">search_keyword_in_zip_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyword</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/common/file_handlers/keyword_in_file.html#KeywordInFile.search_keyword_in_zip_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.common.file_handlers.keyword_in_file.KeywordInFile.search_keyword_in_zip_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search for a keyword within a ZIP file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_path</strong> (<em>str</em>) – The path of the ZIP file.</p></li>
 <li><p><strong>keyword</strong> (<em>str</em>) – The keyword to search for.</p></li>
-<li><p><strong>common_file_types</strong> (<em>list</em>) – The list of common file types to search within.</p></li>
-<li><p><strong>skip_file_types</strong> (<em>list</em>) – The list of file types to skip.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>True if the keyword is found, False otherwise.</p>
+<dd class="field-even"><p>A dictionary with ‘success’, ‘file’ and ‘error_message’ keys.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>

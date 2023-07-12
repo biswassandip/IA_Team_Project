@@ -42,7 +42,7 @@
 <li class="toctree-l3"><a class="reference internal" href="src.common.file_handlers.html">src.common.file_handlers package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#submodules">Submodules</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers.file_event_handler">src.common.file_handlers.file_event_handler module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers.search_in_files">src.common.file_handlers.search_in_files module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers.keyword_in_file">src.common.file_handlers.keyword_in_file module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.common.file_handlers.html#module-src.common.file_handlers">Module contents</a></li>
 </ul>
 </li>
@@ -60,7 +60,6 @@
 <li class="toctree-l2"><a class="reference internal" href="src.common.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common.fw_bot">src.common.fw_bot module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="src.common.html#src.common.fw_bot.monitor_files"><code class="docutils literal notranslate"><span class="pre">monitor_files()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="src.common.html#src.common.fw_bot.rules_exists"><code class="docutils literal notranslate"><span class="pre">rules_exists()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common">Module contents</a></li>
@@ -91,10 +90,9 @@ to start the process.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.bot_config_setup">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">bot_config_setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#bot_config_setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.bot_config_setup" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> bot_config_setup</p>
-<p>This method will trigger the creation of the actual config ini file.</p>
+<dd><p>This method will trigger the creation of the actual config ini file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>boolean</p>
 </dd>
 </dl>
@@ -103,17 +101,24 @@ to start the process.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.display_setup_menu">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">display_setup_menu</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#display_setup_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.display_setup_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> display_setup_menu</p>
-<p>This method is responsible to display the menu options.</p>
+<dd><p>This method is responsible to display the menu options.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.bot_setup.process">
+<span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_execute_once</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.process" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is function processes based on chosen option 2 to start and 3 to stop.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Param<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>b_start</strong> (<em>boolean</em>) – True = to start and False = to stop.</p></li>
+<li><p><strong>config_file_path</strong> (<em>str</em>) – The file path for the cot config ini file.</p></li>
+<li><p><strong>sleep_time</strong> (<em>int</em>) – Default 5 seconds.</p></li>
+<li><p><strong>b_execute_once</strong> (<em>boolean</em>) – Default False.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
+<dd class="field-even"><p>boolean</p>
 </dd>
 </dl>
 </dd></dl>
@@ -121,17 +126,13 @@ to start the process.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.process_menu">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">process_menu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#process_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.process_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> process_menu</p>
-<p>This method is responsible to process the functionality behind the chosen option from the menu.</p>
+<dd><p>This method is responsible to process the functionality behind the chosen option from the menu.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>option</strong> (<em>int</em>) – This is the expected option between 1 to 4.</p>
+<dd class="field-odd"><p><strong>option</strong> (<em>int</em>) – This is the option value between 1-4 chosen by the user.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Responses with a boolean (True or False) after the functionality for an option is executed</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>boolean</p>
+<dd class="field-even"><p>boolean</p>
 </dd>
 </dl>
 </dd></dl>
@@ -139,18 +140,15 @@ to start the process.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.run">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.run" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> run</p>
-<p>This method is the main method that will execute the bot setup process.</p>
+<dd><p>This method is the main method that will execute the bot setup process.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.start_process">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">start_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#start_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.start_process" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> start_process</p>
-<p>This method will start the file monitoring process by updating the stop_flag to False in the ini file
-and triggering the fw_bot.monitor_files.</p>
+<dd><p>This is function is to trigger processes to start it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>boolean</p>
 </dd>
 </dl>
@@ -159,10 +157,9 @@ and triggering the fw_bot.monitor_files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="src.bot_setup.stop_process">
 <span class="sig-prename descclassname"><span class="pre">src.bot_setup.</span></span><span class="sig-name descname"><span class="pre">stop_process</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/bot_setup.html#stop_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.bot_setup.stop_process" title="Permalink to this definition">¶</a></dt>
-<dd><p><strong>Method:</strong> stop_process</p>
-<p>This method will stop the file monitoring process by updating the stop_flag to True in the ini file.</p>
+<dd><p>This is function is to trigger processes to stop it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>boolean</p>
 </dd>
 </dl>

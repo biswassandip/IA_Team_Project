@@ -54,13 +54,7 @@
 
 <div class="viewcode-block" id="display_setup_menu"><a class="viewcode-back" href="../../src.html#src.bot_setup.display_setup_menu">[docs]</a><span class="k">def</span> <span class="nf">display_setup_menu</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **Method:** display_setup_menu</span>
-
 <span class="sd">    This method is responsible to display the menu options.</span>
-
-<span class="sd">    :param: None</span>
-<span class="sd">    :return: None</span>
-<span class="sd">    :rtype: None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">Utils</span><span class="o">.</span><span class="n">custom_print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;=================================================&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -76,15 +70,15 @@
 
 
 <div class="viewcode-block" id="process_menu"><a class="viewcode-back" href="../../src.html#src.bot_setup.process_menu">[docs]</a><span class="k">def</span> <span class="nf">process_menu</span><span class="p">(</span><span class="n">option</span><span class="p">):</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **Method:** process_menu</span>
-
 <span class="sd">    This method is responsible to process the functionality behind the chosen option from the menu.</span>
 
-<span class="sd">    :param option: This is the expected option between 1 to 4.</span>
-<span class="sd">    :type option: int </span>
-<span class="sd">    :return: Responses with a boolean (True or False) after the functionality for an option is executed</span>
-<span class="sd">    :rtype: boolean</span>
+<span class="sd">    Args:</span>
+<span class="sd">        option (int): This is the option value between 1-4 chosen by the user.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">match</span> <span class="n">option</span><span class="p">:</span>
@@ -113,12 +107,12 @@
 
 
 <div class="viewcode-block" id="bot_config_setup"><a class="viewcode-back" href="../../src.html#src.bot_setup.bot_config_setup">[docs]</a><span class="k">def</span> <span class="nf">bot_config_setup</span><span class="p">():</span>
+<span class="w">    </span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **Method:** bot_config_setup</span>
-
 <span class="sd">    This method will trigger the creation of the actual config ini file.</span>
 
-<span class="sd">    :rtype: boolean</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">b_setup</span> <span class="o">=</span> <span class="kc">True</span>
@@ -141,14 +135,65 @@
 
     <span class="k">return</span> <span class="n">b_setup</span></div>
 
-<div class="viewcode-block" id="start_process"><a class="viewcode-back" href="../../src.html#src.bot_setup.start_process">[docs]</a><span class="k">def</span> <span class="nf">start_process</span><span class="p">():</span>
+
+<div class="viewcode-block" id="process"><a class="viewcode-back" href="../../src.html#src.bot_setup.process">[docs]</a><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">b_start</span><span class="p">,</span> <span class="n">config_file_path</span><span class="p">,</span> <span class="n">sleep_time</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">b_execute_once</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **Method:** start_process</span>
+<span class="sd">    This is function processes based on chosen option 2 to start and 3 to stop.</span>
 
-<span class="sd">    This method will start the file monitoring process by updating the stop_flag to False in the ini file</span>
-<span class="sd">    and triggering the fw_bot.monitor_files.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        b_start (boolean): True = to start and False = to stop.</span>
+<span class="sd">        config_file_path (str): The file path for the cot config ini file.</span>
+<span class="sd">        sleep_time (int): Default 5 seconds.</span>
+<span class="sd">        b_execute_once (boolean): Default False.</span>
 
-<span class="sd">    :rtype: boolean</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        boolean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">b_setup</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># read the existing config file</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">)</span>
+
+
+        <span class="c1"># update the value of the stop_flag option</span>
+        <span class="k">if</span> <span class="n">b_start</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;FLAGS&#39;</span><span class="p">,</span> <span class="s1">&#39;stop_flag&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;FLAGS&#39;</span><span class="p">,</span> <span class="s1">&#39;stop_flag&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Write the updated config file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+            
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">config_file_path</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+
+        <span class="c1"># if the process has to be started then start the monitoring</span>
+        <span class="k">if</span> <span class="n">b_start</span><span class="p">:</span>
+            <span class="n">b_setup</span><span class="o">=</span><span class="n">fw_bot</span><span class="o">.</span><span class="n">monitor_files</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="n">sleep_time</span><span class="p">,</span><span class="n">b_execute_once</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">b_setup</span><span class="o">=</span><span class="kc">True</span>
+            
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">Utils</span><span class="o">.</span><span class="n">error_message</span><span class="p">(</span><span class="n">error_message</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_setup</span> <span class="o">=</span>  <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="n">b_setup</span></div>
+
+
+<div class="viewcode-block" id="start_process"><a class="viewcode-back" href="../../src.html#src.bot_setup.start_process">[docs]</a><span class="k">def</span> <span class="nf">start_process</span><span class="p">():</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is function is to trigger processes to start it.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">b_setup</span> <span class="o">=</span> <span class="kc">True</span>
@@ -165,39 +210,20 @@
 
     <span class="c1"># now create the required config</span>
     <span class="k">if</span> <span class="n">b_setup</span><span class="p">:</span>
-        <span class="c1"># read the existing config file</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">)</span>
-
-        <span class="c1"># update the value of the stop_flag option</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;FLAGS&#39;</span><span class="p">,</span> <span class="s1">&#39;stop_flag&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Write the updated config file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
-
-
-        <span class="n">config_file</span> <span class="o">=</span> <span class="n">config_file_path</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">b_setup</span><span class="o">=</span><span class="n">fw_bot</span><span class="o">.</span><span class="n">monitor_files</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">error_message</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">Utils</span><span class="o">.</span><span class="n">error_message</span><span class="p">(</span><span class="n">error_message</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-            <span class="n">b_setup</span> <span class="o">=</span>  <span class="kc">False</span>
+        <span class="n">process</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span><span class="n">config_file_path</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">b_setup</span></div>
 
+
 <div class="viewcode-block" id="stop_process"><a class="viewcode-back" href="../../src.html#src.bot_setup.stop_process">[docs]</a><span class="k">def</span> <span class="nf">stop_process</span><span class="p">():</span>
+
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **Method:** stop_process</span>
+<span class="sd">    This is function is to trigger processes to stop it.</span>
 
-<span class="sd">    This method will stop the file monitoring process by updating the stop_flag to True in the ini file.</span>
-
-<span class="sd">    :rtype: boolean</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        boolean</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
 
     <span class="n">b_setup</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -211,26 +237,16 @@
             <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;The bot.ini path provided in 3.1. is not valid!&quot;</span><span class="p">)</span>
         <span class="n">b_setup</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="c1"># now create the required config</span>
+    <span class="c1"># now stop the process</span>
     <span class="k">if</span> <span class="n">b_setup</span><span class="p">:</span>
-
-        <span class="c1"># read the existing config file</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">)</span>
-
-        <span class="c1"># update the value of the stop_flag option</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;FLAGS&#39;</span><span class="p">,</span> <span class="s1">&#39;stop_flag&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Write the updated config file</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">config_file</span><span class="p">:</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">config_file</span><span class="p">)</span>
+        <span class="n">process</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span><span class="n">config_file_path</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">b_setup</span></div>
 
-<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../src.html#src.bot_setup.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    **Method:** run</span>
 
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../src.html#src.bot_setup.run">[docs]</a><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This method is the main method that will execute the bot setup process.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -254,8 +270,9 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The program was exited by user!&quot;</span><span class="p">)</span>
             <span class="k">break</span></div>
 
-<span class="c1"># run the process</span>
-<span class="n">run</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
 </pre></div>
 
           </div>
