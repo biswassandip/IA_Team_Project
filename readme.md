@@ -7,7 +7,7 @@ This input is a required to define on the keywords and/or file-type to search on
 
 ## Executable
 
-An executable "bot_setup" is provided that is bundled with all dependencies for most of the operating systems. This can be found at <a href="dist/bot_setup#_new">Github: dist</a>.
+An executable "bot_setup" is provided that is bundled with all dependencies for most of the operating systems. This can be found at <a href="msc_ia_bot/dist#_new">Github: dist</a>.
 
 ![Static Badge](https://img.shields.io/badge/python-%3E%3Dv3.10-blue)
 ![Static Badge](https://img.shields.io/badge/dist-download-pink)
