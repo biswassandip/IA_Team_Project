@@ -17,11 +17,27 @@ This input is a required to define on the keywords and/or file-type to search on
 
 An executable "bot_setup" is provided that is bundled with all dependencies for most of the operating systems. This can be found at <a href="msc_ia_bot/dist" target="_blank">Github: dist</a>.
 
-# Foobar
-
-Foobar is a Python library for dealing with word pluralization.
-
 ## Installation
+
+A minimum Python 3.10 version will be required. The project uses Python 3.10.11 and pip 23.1.2. it is recommended to install to a virtual environment. A summary of the installation steps would be:
+
+- 1. Download or clone.
+- 2. Create a virtual environment.
+
+```bash
+$ pip3 install virtualenv
+$ python3 -m aVirtualEnvName
+$ source aVirtualEnvName/bin/activate
+```
+
+- 3. Make sure the code is placed in the environment (ex; aVirtualEnvName) directory.
+- 4. Install the dependencies. All the dependencies can be found in the project as <a href="msc_ia_bot/requirements.txt">Github: requirements.txt</a>. Make sure your virtual environment has been activated.
+
+```bash
+pip install -r requirements.txt
+```
+
+- 5. Now start the program by executing bot_setup.py in the "src" directory.
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
