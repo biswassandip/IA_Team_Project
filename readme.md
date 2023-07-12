@@ -1,11 +1,13 @@
 ![](images/fw_bot_bck.jpeg)
 
-<h1><center><u>Find, Identify, Monitor and Move Sorter</u></center></h1>
-<h2><center>A BOT to do this.</center></h2>
-<section>
-The file sorter project is built with a responsibility to programmatically move files to destinations
-based on a configuration.
-</section>
+# Digital File Monitoring BOT
+
+The BOT is responsible to Monitor, Retrieve and Process as Source Directory based on a Configuration ini file as the input.
+This input is a required to define on the keywords and/or file-type to search on and move the files to respective directories so that they can be given for further analysis.
+
+## Executable
+
+An executable "bot_setup" is provided that is bundled with all dependencies for most of the operating systems. This can be found at <a href="dist/bot_setup#_new">Github: dist</a>.
 
 ![Static Badge](https://img.shields.io/badge/python-%3E%3Dv3.10-blue)
 ![Static Badge](https://img.shields.io/badge/dist-download-pink)
