@@ -10,3 +10,4 @@ based on a configuration.
 ![Static Badge](https://img.shields.io/badge/python-%3E%3Dv3.10-blue)
 ![Static Badge](https://img.shields.io/badge/dependencies-up_to_date-green)
 ![Static Badge](https://img.shields.io/badge/dist-download-pink)
+![Static Badge](https://img.shields.io/badge/release-v1.0.0-purple)
