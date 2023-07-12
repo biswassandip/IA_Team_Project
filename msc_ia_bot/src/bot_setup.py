@@ -129,6 +129,7 @@ def process(b_start, config_file_path, sleep_time=5):
         # Write the updated config file
         with open(config_file_path, 'w') as config_file:
             config.write(config_file)
+            
         config_file = config_file_path
         config = configparser.ConfigParser()
         config.read(config_file)

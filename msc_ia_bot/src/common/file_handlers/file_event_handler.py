@@ -3,14 +3,14 @@
 # description: this class actually monitors and moves files based on
 # the config file
 # --------------------------------------------------------------------
-import os
+import os, sys
 import shutil
-import time
 import fnmatch
 from watchdog.events import FileSystemEventHandler
 from common.general_handlers.logger import Logger
 from common.general_handlers.utils import Utils
 import common.general_handlers.constants as cons
+from src.common.file_handlers.search_in_files import SearchInFiles
 
 class FileMoveEventHandler(FileSystemEventHandler):
 
@@ -31,7 +31,8 @@ class FileMoveEventHandler(FileSystemEventHandler):
         # to handle redundant file events
         self.last_processed_timestamp = None 
 
-        self.process_existing_files()
+        # self.process_existing_files()
+
 
     # ====================================================================
     # when a file is created event
@@ -40,95 +41,116 @@ class FileMoveEventHandler(FileSystemEventHandler):
 
         if not event.is_directory:
 
-            current_timestamp = time.time()
-            # if self.last_processed_timestamp and abs(current_timestamp - self.last_processed_timestamp) < 1:
-            #     return  # skip redundant event        
-
             file_path = event.src_path
             file_name = os.path.basename(file_path)
 
-            self.process_files(file_path,file_name)
-            
-            # update the last processed timestamp
-            # self.last_processed_timestamp = current_timestamp
+            self.process_files(file_path, file_name)
+
 
     # ====================================================================
     # process all files in the existing source_dir when executed for the first time
     # ====================================================================
     def process_existing_files(self):
-        files = os.listdir(self.source_dir)
-        for file_name in files:
-            file_path = os.path.join(self.source_dir, file_name)
-            self.process_files(file_path,file_name)
+
+        b_return = True
+
+        try:
+            files = os.listdir(self.source_dir)
+            for file_name in files:
+                file_path = os.path.join(self.source_dir, file_name)
+                self.process_files(file_path,file_name)
+        except:
+            self.logger.error(str(sys.exc_info()[1]))
+            b_return = False
+
+        return b_return
+        
+
 
     # ====================================================================
     # common rule for processing the file
     # ====================================================================
-    def process_files(self,file_path, file_name):
-        b_matched = False
+    def process_files(self, file_path, file_name):
 
-        for criteria, condition in self.condition_map.items():
+        b_return = True
 
-            # get the respective criteria values
-            search_word = self.condition_map[criteria][0]
-            file_type = self.condition_map[criteria][1]
-            sftp_host = self.condition_map[criteria][2]
-            sftp_port = self.condition_map[criteria][3]
-            destination_dir = self.condition_map[criteria][4]
+        try:
 
-            # booleans for respective operations
-            b_search_on_file_type = False
-            b_search_on_any_file = False
-            b_file_type_only = False
+            for criteria, condition in self.condition_map.items():
 
-            # if no destination directory is provided then skip
-            if (not destination_dir):
-                self.logger.warning(f"No destination provided for criteria '{criteria}'")
-                b_matched = True
-                break
+                # get the respective criteria values
+                search_word = self.condition_map[criteria][0]
+                file_type = self.condition_map[criteria][1]
+                sftp_host = self.condition_map[criteria][2]
+                sftp_port = self.condition_map[criteria][3]
+                destination_dir = self.condition_map[criteria][4]
 
-            # when search_word is provide and file_type is provided
-            if (search_word and file_type):
-                # if the file create matches with the file_type
-                if fnmatch.fnmatch(file_name, file_type):
-                    b_search_on_file_type = self.search_word_in_file(file_path, search_word)
-            
-            # when search_word is provide and file_type is NOT provided
-            if (search_word and not file_type):
-                b_search_on_any_file = self.search_word_in_file(file_path, search_word)
+                # booleans for respective operations
+                b_search_on_file_type = False
+                b_search_on_any_file = False
+                b_file_type_only = False
 
-            # when search_word is provide and file_type is NOT provided
-            if (not search_word and file_type):
-                # if the file create matches with the file_type
-                if fnmatch.fnmatch(file_name, file_type):
-                    b_file_type_only = True
-                elif (file_type=="*.*"):
-                    b_file_type_only = True
+                # if no destination directory is provided then skip
+                if (not destination_dir):
+                    self.logger.warning(f"No destination provided for criteria '{criteria}'")
+                    b_matched = True
+                    break
 
-            if (b_search_on_file_type or b_search_on_any_file or b_file_type_only):
-                self.move_file_to_destination(file_path,file_name,destination_dir)                    
-                self.logger.info(f"Moved file '{file_path}' to '{destination_dir}'")
-                b_matched = True
-                break
+                # when search_word is provide and file_type is provided
+                if (search_word and file_type):
+                    # if the file create matches with the file_type
+                    if fnmatch.fnmatch(file_name, file_type):
+                        b_search_on_file_type = self.search_word_in_file(file_path, search_word)
+                
+                # when search_word is provide and file_type is NOT provided
+                if (search_word and not file_type):
+                    b_search_on_any_file = self.search_word_in_file(file_path, search_word)
 
-        # through the criteria if no match is found
-        # if (not b_matched):
-        #     self.logger.warning(f"File '{file_path}' does not match any conditions.")
+                # when search_word is provide and file_type is NOT provided
+                if (not search_word and file_type):
+                    # if the file create matches with the file_type
+                    if fnmatch.fnmatch(file_name, file_type):
+                        b_file_type_only = True
+                    elif (file_type=="*.*"):
+                        b_file_type_only = True
+
+                if (b_search_on_file_type or b_search_on_any_file or b_file_type_only):
+                    self.move_file_to_destination(file_path,file_name,destination_dir)                    
+                    self.logger.info(f"Moved file '{file_path}' to '{destination_dir}'")
+                    b_matched = True
+                    break
+        except:
+            self.logger.error(str(sys.exc_info()[1]))
+            b_return = False
+
+        return b_return
+
 
     # ====================================================================
     # search a word in the file
     # ====================================================================
     def search_word_in_file(self, file_path, search_word):
-        with open(file_path, 'r') as file:
-            content = file.read()
-            if search_word in content:
-                return True
-        return False
+
+        results = SearchInFiles(self.config, file_path, search_word)
+        if len(results["files"])>0:
+            return True
+        else:
+            return False
+
 
     # ====================================================================
     # move the file to destination
     # ====================================================================
     def move_file_to_destination(self, file_path, file_name, destination_dir):
-        Utils.create_dir(destination_dir)
-        destination_path = os.path.join(destination_dir, file_name)
-        shutil.move(file_path, destination_path)
+
+        b_return = True
+
+        try:
+            Utils.create_dir(destination_dir)
+            destination_path = os.path.join(destination_dir, file_name)
+            shutil.move(file_path, destination_path)
+        except:
+            self.logger.error(str(sys.exc_info()[1]))
+            b_return = False
+
+        return b_return

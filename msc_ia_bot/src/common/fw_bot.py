@@ -9,19 +9,18 @@ from common.file_handlers.file_event_handler import FileMoveEventHandler
 from common.general_handlers.logger import Logger
 import common.general_handlers.constants as cons
 
+
 def rules_exists(config):
     b_exists = True
 
     try:
-        a_value = config.get(cons.INI_HEADER_BOT_RULES,"criteria1")
+        config.get(cons.INI_HEADER_BOT_RULES, "criteria1")
     except:
         b_exists=False
     
     return b_exists
 
 def monitor_files(config, sleep_time):
-    # create the event handler
-    condition_map = {}
     
     if not rules_exists(config):
         return False
@@ -39,6 +38,7 @@ def monitor_files(config, sleep_time):
 
     # prepare for file move
     event_handler =  FileMoveEventHandler(config,condition_map)
+    event_handler.process_existing_files() # process the existing files
 
     # start monitoring the source directory for file creation
     observer = Observer()

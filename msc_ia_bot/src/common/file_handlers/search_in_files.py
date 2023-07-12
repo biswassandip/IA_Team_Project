@@ -2,12 +2,14 @@ import os
 from docx import Document
 from openpyxl import load_workbook
 import xml.etree.ElementTree as ET
-from PyPDF2 import PdfFileReader, PdfReader
+from PyPDF2 import PdfReader
 import zipfile
 import sys
 import common.general_handlers.constants as cons
 
+
 class SearchInFiles:
+
 
     def __init__(self, config, dir_or_file, keyword):
         """
@@ -18,7 +20,6 @@ class SearchInFiles:
         Args:
             config (object): The config file
         """
-
         self.config = config
         self.ini_file_path = self.config.get(cons.INI_HEADER_GENERAL, cons.KEY_INI_FILE_PATH)
 
@@ -27,6 +28,7 @@ class SearchInFiles:
         self.keyword = keyword
         self.common_file_types = [ext.strip() for ext in self.config[cons.INI_HEADER_SEARCH_IN_FILE_TYPES][cons.KEY_INCLUDE].split(',')]
         self.skip_file_types = [ext.strip() for ext in self.config[cons.INI_HEADER_SEARCH_IN_FILE_TYPES][cons.KEY_INCLUDE].split(',')] 
+
 
     def search_files_with_keyword(self):
         
@@ -46,6 +48,7 @@ class SearchInFiles:
 
         return self.search_keyword_in_files(files, self.keyword, self.common_file_types, self.skip_file_types)
 
+
     def get_all_files(self,directory):
         """
         Get a list of all files within a directory and its subdirectories.
@@ -62,6 +65,7 @@ class SearchInFiles:
                 file_path = os.path.join(root, file)
                 file_paths.append(file_path)
         return file_paths
+
 
     def search_keyword_in_files(self, files, keyword, common_file_types, skip_file_types):
         """
@@ -111,6 +115,7 @@ class SearchInFiles:
 
         return {'files': found_files, 'errors': errors}
 
+
     def search_keyword_in_text_file(self, file_path, keyword):
         """
         Search for a keyword within a text file.
@@ -134,7 +139,8 @@ class SearchInFiles:
 
             b_return = False
 
-        return {"success":b_return,"file":file_path,"error_message":error_message}
+        return {"success":b_return, "file":file_path, "error_message":error_message}
+
 
     def search_keyword_in_docx_file(self, file_path, keyword):
         """
@@ -161,7 +167,8 @@ class SearchInFiles:
 
             b_return = False
 
-        return {"success":b_return,"file":file_path,"error_message":error_message}
+        return {"success":b_return, "file":file_path, "error_message":error_message}
+
 
     def search_keyword_in_excel_file(self, file_path, keyword):
         """
@@ -194,7 +201,8 @@ class SearchInFiles:
 
             b_return = False
 
-        return {"success":b_return,"file":file_path,"error_message":error_message}
+        return {"success":b_return, "file":file_path, "error_message":error_message}
+
 
     def search_keyword_in_xml_file(self, file_path, keyword):
         """
@@ -220,7 +228,8 @@ class SearchInFiles:
 
             b_return = False
 
-        return {"success":b_return,"file":file_path,"error_message":error_message}
+        return {"success":b_return, "file":file_path, "error_message":error_message}
+
 
     def search_keyword_in_pdf_file(self, file_path, keyword):
         """
@@ -247,7 +256,8 @@ class SearchInFiles:
 
             b_return = False
 
-        return {"success":b_return,"file":file_path,"error_message":error_message}
+        return {"success":b_return, "file":file_path, "error_message":error_message}
+
 
     def search_keyword_in_zip_file(self, file_path, keyword, common_file_types, skip_file_types):
         """
@@ -278,4 +288,4 @@ class SearchInFiles:
 
             b_return = False
 
-        return {"success":b_return,"file":file_path,"error_message":error_message}
+        return {"success":b_return, "file":file_path, "error_message":error_message}
