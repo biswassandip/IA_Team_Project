@@ -23,13 +23,7 @@ import sys
 
 def display_setup_menu():
     """
-    **Method:** display_setup_menu
-
     This method is responsible to display the menu options.
-
-    :param: None
-    :return: None
-    :rtype: None
     """
 
     Utils.custom_print(f"=================================================", True)
@@ -45,15 +39,15 @@ def display_setup_menu():
 
 
 def process_menu(option):
+    
     """
-    **Method:** process_menu
-
     This method is responsible to process the functionality behind the chosen option from the menu.
 
-    :param option: This is the expected option between 1 to 4.
-    :type option: int 
-    :return: Responses with a boolean (True or False) after the functionality for an option is executed
-    :rtype: boolean
+    Args:
+        option (int): This is the option value between 1-4 chosen by the user.
+
+    Returns:
+        boolean
     """
 
     match option:
@@ -82,12 +76,12 @@ def process_menu(option):
 
 
 def bot_config_setup():
+    
     """
-    **Method:** bot_config_setup
-
     This method will trigger the creation of the actual config ini file.
 
-    :rtype: boolean
+    Returns:
+        boolean
     """
 
     b_setup = True
@@ -110,7 +104,21 @@ def bot_config_setup():
 
     return b_setup
 
-def process(b_start, config_file_path, sleep_time=5):
+
+def process(b_start, config_file_path, sleep_time=5, b_execute_once=False):
+
+    """
+    This is function processes based on chosen option 2 to start and 3 to stop.
+
+    Args:
+        b_start (boolean): True = to start and False = to stop.
+        config_file_path (str): The file path for the cot config ini file.
+        sleep_time (int): Default 5 seconds.
+        b_execute_once (boolean): Default False.
+
+    Returns:
+        boolean
+    """
 
     b_setup = False
 
@@ -136,9 +144,10 @@ def process(b_start, config_file_path, sleep_time=5):
 
         # if the process has to be started then start the monitoring
         if b_start:
-            b_setup=fw_bot.monitor_files(config,sleep_time)
+            b_setup=fw_bot.monitor_files(config,sleep_time,b_execute_once)
         else:
             b_setup=True
+            
     except:
         error_message = str(sys.exc_info()[1])
         Utils.error_message(error_message, True)
@@ -148,13 +157,12 @@ def process(b_start, config_file_path, sleep_time=5):
 
 
 def start_process():
+
     """
-    **Method:** start_process
+    This is function is to trigger processes to start it.
 
-    This method will start the file monitoring process by updating the stop_flag to False in the ini file
-    and triggering the fw_bot.monitor_files.
-
-    :rtype: boolean
+    Returns:
+        boolean
     """
 
     b_setup = True
@@ -175,14 +183,16 @@ def start_process():
 
     return b_setup
 
+
 def stop_process():
-    """
-    **Method:** stop_process
 
-    This method will stop the file monitoring process by updating the stop_flag to True in the ini file.
-
-    :rtype: boolean
     """
+    This is function is to trigger processes to stop it.
+
+    Returns:
+        boolean
+    """
+
 
     b_setup = True
 
@@ -202,10 +212,10 @@ def stop_process():
 
     return b_setup
 
-def run():
-    """
-    **Method:** run
 
+def run():
+
+    """
     This method is the main method that will execute the bot setup process.
 
     """
@@ -228,6 +238,7 @@ def run():
             print(f"")
             print(f"The program was exited by user!")
             break
+
 
 if __name__ == '__main__':
     run()

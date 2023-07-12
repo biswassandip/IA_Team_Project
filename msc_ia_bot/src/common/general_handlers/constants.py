@@ -1,4 +1,6 @@
-# default values for the bot_config.ini file
+"""
+This is a constants module that is used for various functionalities within the program.
+"""
 
 # ------------------------------------------------------------
 INI_HEADER_GENERAL = "GENERAL"
@@ -20,8 +22,6 @@ ROTATION_SIZE = 1000000
 INI_HEADER_SEARCH_IN_FILE_TYPES="SEARCH_IN_FILE_TYPES"
 KEY_INCLUDE="include"
 VALUE_INCLUDE=".txt, .doc, .docx, .xls, .xlsx, .xml, .pdf, .png, .zip, .html, .css"
-KEY_EXCLUDE="exclude"
-VALUE_EXCLUDE=".tmp, .bak, .jpg, .jpeg, .bmp, .gif, .exe"
 
 # ------------------------------------------------------------
 INI_HEADER_BOT_RULES="BOT_RULES"

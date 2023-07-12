@@ -16,20 +16,6 @@ Note that the structure the BOT_RULES criteria is a comma separated string that 
     * sftp_port - this is the port number. **Mandatory** only if the file needs to be SFTP'ed.
     * destination_dir - path where the file needs to be moved. This is **MANDATORY**
 
-Some examples are given below:
-    * Example; criteria1: business, *.doc, 22.22.22.22, 456, /remote/sftp/path/dir1
-    In this case, if the word "business" is found in the file then it will be sftp'ed to the given directory.
-
-    * Example; criteria1: business, , 22.22.22.22, 456, /remote/sftp/path/dir2
-    In this case, if the word "business" is found in the any file then it will be sftp'ed to the given directory.
-
-    * Example; criteria1: ,*.doc , 22.22.22.22, 456, /remote/sftp/path/dir3
-    In this case, if the file type of *.doc then it will be sftp'ed to the given directory.
-
-    * Example; criteria1: business ,*.doc , , , /local/dir1
-    In this case, if the word "business" is found in the file then it will be moved to the given directory.
-
-and so on....
 """
 
 from configparser import ConfigParser
@@ -80,19 +66,12 @@ class Config:
 
 
     def create_config(self):
-        """
-        **Method:** create_config
 
+        """
         This method will create the actual config file with required configurations for:
 
-        * [GENERAL] - consists of  general settings like ini file path, source directory, etc.
-        * [SEARCH_IN_FILE_TYPES] - consists of filter types that will be included and excluded in word search.
-        * [BOT_RULES] - consists of the various combinations for the rules criteria
-        * [SFTP_KEYS] - provides with the private key path
-        * [PROCESSES] -  settings for number of processes to be run
-        * [FLAGS] - settings to stop the process (=True)
-        
-        :return: boolean
+        Returns:
+            boolean
         """
 
         b_config = True
@@ -111,17 +90,14 @@ class Config:
             # create the search file types for include and exclude
             self.cp_obj[cons.INI_HEADER_SEARCH_IN_FILE_TYPES] = {
                 cons.KEY_INCLUDE: cons.VALUE_INCLUDE,
-                cons.KEY_EXCLUDE: cons.VALUE_EXCLUDE,
             }
 
             # create the search config
             self.cp_obj[cons.INI_HEADER_BOT_RULES] = {
-                "criteria1": "search_word, file_type, sftp_host, sftp_port, destination_dir",
-                "criteria2": "search_word, , sftp_host, sftp_port, destination_dir",
-                "criteria3": ", file_type, sftp_host, sftp_port, destination_dir",
-                "criteria4": "search_word, file_type, , , destination_dir",
-                "criteria5": "search_word, , , , destination_dir",
-                "criteria6": ", file_type, , , destination_dir",
+                "criteria1 = sample, .pdf, , , path/to/destination",
+                "criteria2 = sample, .txt, , , path/to/destination",
+                "criteria3 = sample, .xlsx, , , path/to/destination",
+                "criteria4 = sample, .docx, , , path/to/destination",
             }
 
             # create the keys config
@@ -172,16 +148,16 @@ class Config:
         return b_config
 
     def generate_ssh_key(self):
-        """
-        **Method:** generate_ssh_key
 
+        """
         This method generates the private and public key files.
         Please note that the private key file should not be shared with anyone and kept in a safe place.
         Update the private key file path in the bot_config.ini file so that it can be used to SFTP.
 
         To enable smooth SFTP, the public key must be shared with the SFTP server admin so that it can added to the server config.
 
-        :return: boolean
+        Returns:
+            boolean
         """
 
         b_generate = True

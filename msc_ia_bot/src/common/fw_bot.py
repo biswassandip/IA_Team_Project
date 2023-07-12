@@ -1,43 +1,32 @@
-# --------------------------------------------------------------------
-# file name: fw_bot.py
-# description: this class actually monitors and moves files based on
-# the config file..
-# --------------------------------------------------------------------
 import time
 from watchdog.observers import Observer
 from common.file_handlers.file_event_handler import FileMoveEventHandler
 from common.general_handlers.logger import Logger
 import common.general_handlers.constants as cons
 
+"""
+**Module: fw_bot**
 
-def rules_exists(config):
-    b_exists = True
+This module is used to trigger the file processing within the file_handler module.
+"""
 
-    try:
-        config.get(cons.INI_HEADER_BOT_RULES, "criteria1")
-    except:
-        b_exists=False
+def monitor_files(config, sleep_time, b_execute_once=False):
+
+    """
+    This is function creates the on_created event for file handling with class FileMoveEventHandler.
+    It also executes the function to process all the files within the file handling class.
+
+    Args:
+        config (object): The config file from the bot config.
+        sleep_time (int): This is used to delay in checking the config stop_flag value.
+        b_execute_once (boolean): Default False. Used to execute only once.
+
+    Returns:
+        boolean
+    """
     
-    return b_exists
-
-def monitor_files(config, sleep_time):
-    
-    if not rules_exists(config):
-        return False
-    
-    # prepare the condition_map if it is a CLIENT
-    condition_map = {}
-    # prepare the condition_map if it is a SERVER
-    for key, value in config.items(cons.INI_HEADER_BOT_RULES):
-        
-        # the * operator is used to assign multiple values from the result of value.split(',') to the variables key and value.
-        criteria, search_word, file_type, sftp_host, sftp_port, destination_dir = key, *value.split(',')
-
-        # populate the condition_map
-        condition_map[criteria.strip()] = (search_word.strip(), file_type.strip(), sftp_host.strip(), sftp_port.strip(), destination_dir.strip())
-
     # prepare for file move
-    event_handler =  FileMoveEventHandler(config,condition_map)
+    event_handler =  FileMoveEventHandler(config)
     event_handler.process_existing_files() # process the existing files
 
     # start monitoring the source directory for file creation
@@ -69,6 +58,9 @@ def monitor_files(config, sleep_time):
                 if stop_flag:
                     logger.info("Stopping the file monitoring.")
                     print(f"The file monitoring process has been stopped")
+                    break
+
+                if b_execute_once:
                     break
     
         observer.stop()

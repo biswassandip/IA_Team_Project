@@ -8,21 +8,29 @@ from logging.handlers import RotatingFileHandler
 import common.general_handlers.constants as cons
 import configparser
 
+"""
+**class: Logger*
+
+This class is responsible to log into files when invoked by the program to be logged with proper formats.
+The log also makes sure that it is rotated and the rotation values are given in the bot config ini file.
+"""
+
 
 class Logger:
 
-    # ====================================================================
-    # initialize the config
-    # ====================================================================
+
     def __init__(self, config_file_path) -> None:
         self.config = configparser.ConfigParser()
         self.config.read(config_file_path)
         self.init_logger()
 
-    # ====================================================================
-    # initialize the logger
-    # ====================================================================
+
     def init_logger(self):
+
+        """
+        Initializes the actual logging rotation and formatting values
+        """
+
         self.logger = logging.getLogger(cons.LOGGING_ID)
         self.logger.setLevel(logging.INFO)
 
@@ -38,20 +46,38 @@ class Logger:
 
         self.logger.addHandler(handler)
 
-    # ====================================================================
-    # log the info
-    # ====================================================================
+
     def info(self, text):
+
+        """
+        Logs information descriptions
+
+        Args:
+            text (str): The description
+        """
+
         self.logger.info(f"{text}")
 
-    # ====================================================================
-    # log the warning
-    # ====================================================================
+
     def warning(self, text):
+
+        """
+        Logs warning descriptions
+
+        Args:
+            text (str): The description
+        """
+        
         self.logger.warning(f"{text}")
 
-    # ====================================================================
-    # log the error
-    # ====================================================================
+
     def error(self, text):
+
+        """
+        Logs error descriptions
+
+        Args:
+            text (str): The description
+        """
+        
         self.logger.error(f"{text}")

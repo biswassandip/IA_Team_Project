@@ -16,3 +16,4 @@ build
 src/common/general_handlers/__pycache__
 src/common/file_handlers/__pycache__
 *.pyc
+msc_ia_bot/__pycache__
