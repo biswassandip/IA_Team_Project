@@ -13,4 +13,4 @@ based on a configuration.
 ![Static Badge](https://img.shields.io/badge/docs-sphinx-purple)
 ![Static Badge](https://img.shields.io/badge/htmlcov-coverage-yellow)
 ![Static Badge](https://img.shields.io/badge/test_case-pytest-yellow)
-![Static Badge](https://img.shields.io/badge/cc-radon-yellow)
+![Static Badge](https://img.shields.io/badge/metrics-radon-yellow)
