@@ -94,10 +94,10 @@ class Config:
 
             # create the search config
             self.cp_obj[cons.INI_HEADER_BOT_RULES] = {
-                "criteria1 = sample, .pdf, , , path/to/destination",
-                "criteria2 = sample, .txt, , , path/to/destination",
-                "criteria3 = sample, .xlsx, , , path/to/destination",
-                "criteria4 = sample, .docx, , , path/to/destination",
+                "criteria1": "sample, .pdf, , , path/to/destination",
+                "criteria2": "sample, .txt, , , path/to/destination",
+                "criteria3": "sample, .xlsx, , , path/to/destination",
+                "criteria4": "sample, .docx, , , path/to/destination"
             }
 
             # create the keys config
@@ -141,7 +141,7 @@ class Config:
             b_config = self.generate_ssh_key()
         except:
             error_message = str(sys.exc_info()[1])
-            Utils.error_message(error_message, True)
+            Utils.error_message(error_message + " (create_config)", True)
 
             b_config = False
 
@@ -185,7 +185,7 @@ class Config:
 
         except:
             error_message = str(sys.exc_info()[1])
-            Utils.error_message(error_message, True)
+            Utils.error_message(error_message + " (generate_ssh_key)", True)
             b_generate = False
 
         return b_generate
