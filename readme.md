@@ -11,10 +11,3 @@ based on a configuration.
 ![Static Badge](https://img.shields.io/badge/dependencies-up_to_date-green)
 ![Static Badge](https://img.shields.io/badge/dist-download-pink)
 ![Static Badge](https://img.shields.io/badge/release-v1.0.0-purple)
-
-```seq
-Andrew->China: Says Hello
-Note right of China: China thinks\nabout it
-China-->Andrew: How are you?
-Andrew->>China: I am good thanks!
-```
