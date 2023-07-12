@@ -11,3 +11,7 @@ based on a configuration.
 ![Static Badge](https://img.shields.io/badge/dependencies-up_to_date-green)
 ![Static Badge](https://img.shields.io/badge/dist-download-pink)
 ![Static Badge](https://img.shields.io/badge/release-v1.0.0-purple)
+![Static Badge](https://img.shields.io/badge/docs-sphinx-purple)
+![Static Badge](https://img.shields.io/badge/htmlcov-coverage-yellow)
+![Static Badge](https://img.shields.io/badge/test_case-pytest-yellow)
+![Static Badge](https://img.shields.io/badge/cc-radon-yellow)
