@@ -18,3 +18,4 @@ src/common/file_handlers/__pycache__
 *.pyc
 msc_ia_bot/__pycache__
 msc_ia_bot/src/build
+pyvenv.cfg

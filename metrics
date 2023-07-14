@@ -1,0 +1,53 @@
+src/bot_setup.py
+    [1m[35mF [0m216:0 run - [32mB[0m
+    [1m[35mF [0m41:0 process_menu - [32mA[0m
+    [1m[35mF [0m108:0 process - [32mA[0m
+    [1m[35mF [0m78:0 bot_config_setup - [32mA[0m
+    [1m[35mF [0m159:0 start_process - [32mA[0m
+    [1m[35mF [0m187:0 stop_process - [32mA[0m
+    [1m[35mF [0m24:0 display_setup_menu - [32mA[0m
+src/common/fw_bot.py
+    [1m[35mF [0m13:0 monitor_files - [32mB[0m
+src/common/general_handlers/config.py
+    [1m[36mC [0m32:0 Config - [32mA[0m
+    [1m[37mM [0m68:4 Config.create_config - [32mA[0m
+    [1m[37mM [0m150:4 Config.generate_ssh_key - [32mA[0m
+    [1m[37mM [0m49:4 Config.__init__ - [32mA[0m
+src/common/general_handlers/logger.py
+    [1m[36mC [0m19:0 Logger - [32mA[0m
+    [1m[37mM [0m22:4 Logger.__init__ - [32mA[0m
+    [1m[37mM [0m28:4 Logger.init_logger - [32mA[0m
+    [1m[37mM [0m50:4 Logger.info - [32mA[0m
+    [1m[37mM [0m62:4 Logger.warning - [32mA[0m
+    [1m[37mM [0m74:4 Logger.error - [32mA[0m
+src/common/general_handlers/utils.py
+    [1m[37mM [0m22:4 Utils._print_it - [32mB[0m
+    [1m[36mC [0m18:0 Utils - [32mA[0m
+    [1m[37mM [0m172:4 Utils.create_dir - [32mA[0m
+    [1m[37mM [0m120:4 Utils.validate_dir_pattern - [32mA[0m
+    [1m[37mM [0m66:4 Utils.custom_input - [32mA[0m
+    [1m[37mM [0m80:4 Utils.custom_print - [32mA[0m
+    [1m[37mM [0m94:4 Utils.information - [32mA[0m
+    [1m[37mM [0m107:4 Utils.error_message - [32mA[0m
+    [1m[37mM [0m191:4 Utils.full_path - [32mA[0m
+    [1m[37mM [0m206:4 Utils.get_file_name - [32mA[0m
+src/common/file_handlers/keyword_in_file.py
+    [1m[37mM [0m24:4 KeywordInFile.search_keyword_in_files - [32mB[0m
+    [1m[37mM [0m116:4 KeywordInFile.search_keyword_in_excel_file - [32mB[0m
+    [1m[36mC [0m18:0 KeywordInFile - [32mB[0m
+    [1m[37mM [0m205:4 KeywordInFile.search_keyword_in_zip_file - [32mB[0m
+    [1m[37mM [0m88:4 KeywordInFile.search_keyword_in_docx_file - [32mA[0m
+    [1m[37mM [0m177:4 KeywordInFile.search_keyword_in_pdf_file - [32mA[0m
+    [1m[37mM [0m61:4 KeywordInFile.search_keyword_in_text_file - [32mA[0m
+    [1m[37mM [0m150:4 KeywordInFile.search_keyword_in_xml_file - [32mA[0m
+    [1m[37mM [0m21:4 KeywordInFile.__init__ - [32mA[0m
+src/common/file_handlers/file_event_handler.py
+    [1m[37mM [0m127:4 FileMoveEventHandler.process_files - [33mC[0m
+    [1m[36mC [0m19:0 FileMoveEventHandler - [32mA[0m
+    [1m[37mM [0m68:4 FileMoveEventHandler._get_condition_map - [32mA[0m
+    [1m[37mM [0m107:4 FileMoveEventHandler.process_existing_files - [32mA[0m
+    [1m[37mM [0m31:4 FileMoveEventHandler.__init__ - [32mA[0m
+    [1m[37mM [0m49:4 FileMoveEventHandler._rules_exists - [32mA[0m
+    [1m[37mM [0m92:4 FileMoveEventHandler.on_created - [32mA[0m
+    [1m[37mM [0m202:4 FileMoveEventHandler.move_file_to_destination - [32mA[0m
+    [1m[37mM [0m186:4 FileMoveEventHandler.search_word_in_file - [32mA[0m
