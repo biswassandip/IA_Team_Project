@@ -1,0 +1,13 @@
+
+Ini file: /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS
+
+Source dir: /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/source_dir
+
+Destination dir: /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/destination_dir
+
+criteria1 = example, .pdf, , , /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/destination_dir
+criteria2 = example, .txt, , , /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/destination_dir
+criteria3 = example, .xlsx, , , /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/destination_dir
+criteria4 = example, .docx, , , /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/destination_dir
+
+log_file = /Users/gini/TeamProject/IA_Team_Project/msc_ia_bot/tests/TEST_PATHS/IA_BOT/log/bot_log.log
