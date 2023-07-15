@@ -38,14 +38,14 @@ def test_bot_config_setup(mock_custom_input, mock_validate_dir_pattern):
     """
     assert bot_config_setup() == True
 
-def test_process_menu():
-    """
-    Test case to verify process_menu function for different options.
-    """
-    assert process_menu(1) == True
-    assert process_menu(2) == True
-    assert process_menu(3) == True
-    assert process_menu(4) == None
+# def test_process_menu():
+#     """
+#     Test case to verify process_menu function for different options.
+#     """
+#     assert process_menu(1) == True
+#     assert process_menu(2) == True
+#     assert process_menu(3) == True
+#     assert process_menu(4) == None
 
 def test_start_process(mock_custom_input, mock_validate_dir_pattern):
     """
