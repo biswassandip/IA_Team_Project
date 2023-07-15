@@ -15,7 +15,7 @@ This input is required with proper definitions about the keywords and/or file-ty
 
 ## Executable
 
-An executable "bot_setup" is provided that is bundled with all dependencies for most of the operating systems. This can be found at <a href="msc_ia_bot/dist" target="_blank">Github: dist</a>.
+An executable "bot_setup" is provided that is bundled with all dependencies for most of the operating systems. This can be found at <a href="dist" target="_blank">Github: dist</a>.
 
 ## Installation
 
@@ -31,7 +31,7 @@ $ source aVirtualEnvName/bin/activate
 ```
 
 - Make sure the code is placed in the environment (ex; aVirtualEnvName) directory.
-- Install the dependencies. All the dependencies can be found in the project as <a href="msc_ia_bot/requirements.txt">Github: requirements.txt</a>. Make sure your virtual environment has been activated.
+- Install the dependencies. All the dependencies can be found in the project as <a href="requirements.txt">Github: requirements.txt</a>. Make sure your virtual environment has been activated.
 
 ```bash
 pip install -r requirements.txt
