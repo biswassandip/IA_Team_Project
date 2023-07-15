@@ -31,10 +31,10 @@ $ source aVirtualEnvName/bin/activate
 ```
 
 - Make sure the code is placed in the environment (ex; aVirtualEnvName) directory.
-- Install the dependencies. All the dependencies can be found in the project as <a href="requirements.txt">Github: requirements.txt</a>. Make sure your virtual environment has been activated.
+- Install the dependencies. All the dependencies can be found in the project as <a href="requirements-dev.txt">Github: requirements-dev.txt</a>. Make sure your virtual environment has been activated.
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 - Now start the program by executing bot_setup.py in the "src" directory.
