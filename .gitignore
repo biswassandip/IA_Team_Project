@@ -1,10 +1,12 @@
 msc_ia_bot/bin
 msc_ia_bot/include
 msc_ia_bot/lib
+msc_ia_bot/etc
+msc_ia_bot/etc
+msc_ia_bot/share
 *.pem
 *.pub
 *.ini
-msc_ia_bot/build
 .vscode
 IA_BOT
 msc_ia_bot/src/common/__pycache__
